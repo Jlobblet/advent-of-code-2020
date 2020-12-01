@@ -12,7 +12,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AocReflection\AocReflection.fsproj" />
-      <ProjectReference Include="..\Day1\Day1\Day1.fsproj" />
+      <ProjectReference Include="..\Day1\Day1.fsproj" />
     </ItemGroup>
 
 </Project>
