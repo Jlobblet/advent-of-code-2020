@@ -8,6 +8,9 @@
     <ItemGroup>
         <Compile Include="MapExtensions.fs" />
         <Compile Include="Program.fs" />
+        <Content Include="Input\1">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>

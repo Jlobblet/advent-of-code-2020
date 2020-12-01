@@ -13,7 +13,7 @@ let cartesianProduct seqs =
     Seq.foldBack(fun elem acc -> [for x in elem do for y in acc -> x::y]) seqs [[]]
 
 let private readInput () =
-    let inp = File.ReadAllText @"C:\Users\John\AppData\Roaming\advent-of-code-2020\1\input"
+    let inp = File.ReadAllText @"Input/1"
     // The input is a list of integers separated by newlines
     inp.Split(Environment.NewLine, StringSplitOptions.TrimEntries)
     |> Array.choose tryInt
