@@ -17,12 +17,9 @@ let cartesianProduct seqs =
         }) seqs (Seq.singleton [])
 
 let private readInput () =
-    let inp = File.ReadAllText @"Input/1"
-    // The input is a list of integers separated by newlines
-    inp.Split(Environment.NewLine, StringSplitOptions.TrimEntries)
-    |> Array.choose tryInt
-    |> Array.sort
-    |> Array.toSeq
+    File.ReadLines @"Input/1"
+    |> Seq.choose tryInt
+    |> Seq.sort
 
 let SolveN N =
     let numbers = readInput ()
