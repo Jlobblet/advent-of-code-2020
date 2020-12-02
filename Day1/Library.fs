@@ -10,7 +10,11 @@ let tryInt (str: string) =
     | _ -> None
 
 let cartesianProduct seqs =
-    Seq.foldBack(fun elem acc -> seq {for x in elem do for y in acc -> x::y}) seqs (Seq.singleton [])
+    Seq.foldBack (fun elem acc ->
+        seq {
+            for x in elem do
+                for y in acc -> x :: y
+        }) seqs (Seq.singleton [])
 
 let private readInput () =
     let inp = File.ReadAllText @"Input/1"
@@ -22,6 +26,7 @@ let private readInput () =
 
 let SolveN N =
     let numbers = readInput ()
+
     Seq.init N (fun _ -> numbers)
     |> cartesianProduct
     |> Seq.find (fun arr -> arr |> Seq.reduce (+) = 2020)
@@ -29,9 +34,7 @@ let SolveN N =
     |> string
 
 [<Solution("1A")>]
-let SolutionA () =
-    SolveN 2
+let SolutionA () = SolveN 2
 
 [<Solution("1B")>]
-let SolutionB () =
-    SolveN 3
+let SolutionB () = SolveN 3
