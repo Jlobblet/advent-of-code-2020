@@ -24,7 +24,7 @@ let private readInput () =
 let SolveN N =
     let numbers = readInput ()
 
-    Seq.init N (fun _ -> numbers)
+    Seq.replicate N numbers
     |> cartesianProduct
     |> Seq.find (fun arr -> arr |> Seq.reduce (+) = 2020)
     |> List.reduce (*)
