@@ -10,22 +10,22 @@ let tryInt (str: string) =
     | _ -> None
 
 let cartesianProduct seqs =
-    Seq.foldBack(fun elem acc -> [for x in elem do for y in acc -> x::y]) seqs [[]]
+    Seq.foldBack(fun elem acc -> seq {for x in elem do for y in acc -> x::y}) seqs (Seq.singleton [])
 
 let private readInput () =
     let inp = File.ReadAllText @"Input/1"
     // The input is a list of integers separated by newlines
     inp.Split(Environment.NewLine, StringSplitOptions.TrimEntries)
     |> Array.choose tryInt
-    |> Array.toList
+    |> Array.sort
+    |> Array.toSeq
 
 let SolveN N =
     let numbers = readInput ()
-    List.init N (fun _ -> numbers)
+    Seq.init N (fun _ -> numbers)
     |> cartesianProduct
-    |> List.where (fun arr -> arr |> List.reduce (+) = 2020)
-    |> List.map (List.reduce (*))
-    |> List.head
+    |> Seq.find (fun arr -> arr |> Seq.reduce (+) = 2020)
+    |> List.reduce (*)
     |> string
 
 [<Solution("1A")>]
