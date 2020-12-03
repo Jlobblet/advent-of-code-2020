@@ -1,3 +1,4 @@
+[<RequireQualifiedAccess>]
 module Map
 
 let keys map = map |> Map.toSeq |> Seq.map fst
