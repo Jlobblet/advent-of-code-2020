@@ -8,6 +8,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AocReflection", "AocReflect
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Day2", "Day2\Day2.fsproj", "{24B4B294-EEDA-4C03-9A54-2FE8E5295061}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Day3", "Day3\Day3.fsproj", "{2016C77B-00AB-42C5-A0D6-32E68F20C20E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{24B4B294-EEDA-4C03-9A54-2FE8E5295061}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24B4B294-EEDA-4C03-9A54-2FE8E5295061}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24B4B294-EEDA-4C03-9A54-2FE8E5295061}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2016C77B-00AB-42C5-A0D6-32E68F20C20E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2016C77B-00AB-42C5-A0D6-32E68F20C20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2016C77B-00AB-42C5-A0D6-32E68F20C20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2016C77B-00AB-42C5-A0D6-32E68F20C20E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

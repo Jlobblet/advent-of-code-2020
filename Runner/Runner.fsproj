@@ -14,12 +14,16 @@
         <Content Include="Input\2">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+        <Content Include="Input\3">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\AocReflection\AocReflection.fsproj" />
       <ProjectReference Include="..\Day1\Day1.fsproj" />
       <ProjectReference Include="..\Day2\Day2.fsproj" />
+      <ProjectReference Include="..\Day3\Day3.fsproj" />
     </ItemGroup>
 
 </Project>
