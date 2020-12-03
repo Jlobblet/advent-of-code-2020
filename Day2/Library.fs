@@ -12,13 +12,14 @@ type PasswordSpec =
       upper: int
       char: char
       password: string }
-    
+
 let createPasswordSpec =
     PasswordRegex.Match
-    >> fun m -> { lower = int m.Groups.["lower"].Value
-                  upper = int m.Groups.["upper"].Value
-                  char = char m.Groups.["char"].Value
-                  password = m.Groups.["password"].Value }
+    >> fun m ->
+        { lower = int m.Groups.["lower"].Value
+          upper = int m.Groups.["upper"].Value
+          char = char m.Groups.["char"].Value
+          password = m.Groups.["password"].Value }
 
 let private readInput () =
     File.ReadLines @"Input/2"
