@@ -29,6 +29,6 @@ let main argv =
         let result = solution |> invoke
         sw.Stop()
         printfn "%O" result
-        printfn "Execution time: %A\n" sw.Elapsed
+        printfn "Execution time: %A (%ims)\n" sw.Elapsed sw.ElapsedMilliseconds
 
     0 // return an integer exit code
