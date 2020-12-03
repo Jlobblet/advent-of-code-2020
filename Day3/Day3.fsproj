@@ -5,12 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="SeqExtenion.fs" />
         <Compile Include="Library.fs" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\AocReflection\AocReflection.fsproj" />
+      <ProjectReference Include="..\Extensions\Extensions.fsproj" />
     </ItemGroup>
 
 </Project>

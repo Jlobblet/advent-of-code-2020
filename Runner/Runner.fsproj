@@ -6,7 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="MapExtensions.fs" />
         <Compile Include="Program.fs" />
         <Content Include="Input\1">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -24,6 +23,7 @@
       <ProjectReference Include="..\Day1\Day1.fsproj" />
       <ProjectReference Include="..\Day2\Day2.fsproj" />
       <ProjectReference Include="..\Day3\Day3.fsproj" />
+      <ProjectReference Include="..\Extensions\Extensions.fsproj" />
     </ItemGroup>
 
 </Project>
