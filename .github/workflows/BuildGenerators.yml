@@ -23,14 +23,14 @@ jobs:
         - name: Install dependencies
           run: dotnet restore
         - name: Build
-          run: dotnet publish --configuration Release --no-restore --self-contained --runtime ${{ build-target }} --output "./build/${PROJECT_NAME}_${{ build-target }}"    
+          run: dotnet publish --configuration Release --no-restore --self-contained --runtime ${{ matrix.build-target }} --output "./build/${PROJECT_NAME}_${{ matrix.build-target }}"    
         - name: Zip binary
           id: zip_binary
           run: |
             cd ./build/
-            zip -r "${PROJECT_NAME}_${{ build-target }}.zip" "${PROJECT_NAME}_${{ build-target }}"
-            echo "::set-output name=binary_path::$(readlink -f ${PROJECT_NAME}_${{ build-target }}.zip)"
-            echo "::set-output name=asset_name::${PROJECT_NAME}_${{ build-target }}"
+            zip -r "${PROJECT_NAME}_${{ matrix.build-target }}.zip" "${PROJECT_NAME}_${{ matrix.build-target }}"
+            echo "::set-output name=binary_path::$(readlink -f ${PROJECT_NAME}_${{ matrix.build-target }}.zip)"
+            echo "::set-output name=asset_name::${PROJECT_NAME}_${{ matrix.build-target }}"
         - uses: actions/upload-artifact@v2
           with:
             name: ${{ steps.zip_binary.outputs.asset_name }}
