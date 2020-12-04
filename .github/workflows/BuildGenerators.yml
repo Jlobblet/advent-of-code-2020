@@ -1,8 +1,6 @@
 name: Build Generators project
 on:
     push:
-        paths:
-        - 'Generator/**'
         tags:
         - 'v*'
         
