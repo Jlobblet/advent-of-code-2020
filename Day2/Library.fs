@@ -22,7 +22,7 @@ let createPasswordSpec =
           password = m.Groups.["password"].Value }
 
 let private readInput () =
-    File.ReadLines @"Input/BB2"
+    File.ReadLines @"Input/2"
     |> Seq.map createPasswordSpec
 
 let validatePasswordA spec =
