@@ -46,7 +46,6 @@ let main argv =
                 Console.ReadLine() |> int :> obj)
             |> Array.append (Array.singleton (random :> obj))
 
-
         printf "Enter output filename (blank for default): "
 
         let outputPath =
