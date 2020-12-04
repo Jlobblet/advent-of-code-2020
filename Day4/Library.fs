@@ -80,7 +80,8 @@ let SolutionB () =
           ("hcl",
            run'
                (pchar '#'
-                .>>. (exactlyN 6 (+) (map string (anyOf hexDigit))))
+                .>>. (exactlyN 6 (+) (map string (anyOf hexDigit)))
+                .>>. pEOL)
            >> resultToOption
            >> Option.isSome)
           ("ecl",
