@@ -30,7 +30,7 @@ let solve predicates =
             pwhitespace
 
     let (<&>) f g = (fun x -> f x && g x)
-    
+
     getInput ()
     |> Array.choose (runNoSplit p >> resultToOption)
     |> Array.where (Seq.reduce (<&>) predicates)
@@ -39,7 +39,9 @@ let solve predicates =
 
 [<Solution("4A")>]
 let SolutionA () =
-    solve [List.map fst >> Set.ofList >> Set.isSubset requiredKeys]
+    solve [ List.map fst
+            >> Set.ofList
+            >> Set.isSubset requiredKeys ]
 
 [<Solution("4B")>]
 let SolutionB () =
