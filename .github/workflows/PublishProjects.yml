@@ -39,6 +39,7 @@ jobs:
           with:
             tag_name: ${{ github.ref }}
             release_name: ${{ github.ref }}
+        - run: ls ~
         - name: Upload win-x64
           uses: actions/upload-release-asset@v1
           env:
