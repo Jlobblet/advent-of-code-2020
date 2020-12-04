@@ -2,7 +2,7 @@ name: Build Generators project
 on:
     push:
         tags:
-        - 'v*'
+        - 'day*'
 jobs:
     build:
         env:
