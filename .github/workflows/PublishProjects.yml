@@ -29,8 +29,8 @@ jobs:
         - name: Compress binaries
           run: |
             zip -r ${PROJECT_NAME}_win-x64.zip ~/win-x64/
-            tar cf - ~/linux-x64/ | xz -z - > ~/${PROJECT_NAME}_linux-x64.tar.xz
-            tar cf - ~/osx-x64/ | xz -z - > ~/${PROJECT_NAME}_osx-x64.tar.xz
+            tar cJf ~/${PROJECT_NAME}_linux-x64.tar.xz ~/linux-x64/
+            tar cJf ~/${PROJECT_NAME}_osx-x64.tar.xz ~/osx-x64/
         - name: Create release
           id: create_release
           uses: actions/create-release@v1
@@ -46,7 +46,7 @@ jobs:
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
             asset_path: AoC2020_win-x64.zip
-            asset_name: AoC2020_win-x64
+            asset_name: AoC2020_win-x64.zip
             asset_content_type: application/zip
         - name: Upload linux-x64
           uses: actions/upload-release-asset@v1
@@ -55,7 +55,7 @@ jobs:
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
             asset_path: AoC2020_linux-x64.tar.xz
-            asset_name: AoC2020_linux-x64
+            asset_name: AoC2020_linux-x64.tar.xz
             asset_content_type: application/zip
         - name: Upload osx-x64
           uses: actions/upload-release-asset@v1
@@ -64,6 +64,6 @@ jobs:
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
             asset_path: AoC2020_osx-x64.tar.xz
-            asset_name: AoC2020_osx-x64
+            asset_name: AoC2020_osx-x64.tar.xz
             asset_content_type: application/zip
             
