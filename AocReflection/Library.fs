@@ -7,9 +7,12 @@ open System.Reflection
 type SolutionAttribute(Label: string) =
     inherit Attribute()
 
+type GeneratorAttribute(Label: string) =
+    inherit Attribute()
+
 module Reflection =
 
-    let getSolutions () =
+    let getMethodsWithLabeledAttribute<'attr> () =
         let assemblies =
             FileInfo(Assembly.GetExecutingAssembly().Location)
                 .Directory.FullName
@@ -21,10 +24,10 @@ module Reflection =
         |> Array.filter (fun m ->
             (m.CustomAttributes
              |> Seq.map (fun a -> a.AttributeType)
-             |> Seq.contains typeof<SolutionAttribute>))
+             |> Seq.contains typeof<'attr>))
         |> Array.map (fun m ->
             (m.CustomAttributes
-             |> Seq.find (fun a -> a.AttributeType = typeof<SolutionAttribute>)
+             |> Seq.find (fun a -> a.AttributeType = typeof<'attr>)
              |> (fun a -> a.ConstructorArguments |> Seq.head |> string))
                 .Replace("\"", ""),
             m)
