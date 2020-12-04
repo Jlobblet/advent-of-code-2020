@@ -59,39 +59,39 @@ let SolutionB () =
           "oth" ]
 
     let predicates =
-        [ "byr",
-          run' (pintRange 1920 2002)
-          >> resultToOption
-          >> Option.isSome
-          "iyr",
-          run' (pintRange 2010 2020)
-          >> resultToOption
-          >> Option.isSome
-          "eyr",
-          run' (pintRange 2020 2030)
-          >> resultToOption
-          >> Option.isSome
-          "hgt",
-          run'
-              ((pintRange 150 193 .>>. pstring "cm")
-               <|> (pintRange 59 76 .>>. pstring "in"))
-          >> resultToOption
-          >> Option.isSome
-          "hcl",
-          run'
-              (pchar '#'
-               .>>. (exactlyN 6 (+) (map string (anyOf hexDigit))))
-          >> resultToOption
-          >> Option.isSome
-          "ecl",
-          run' (choice (List.map pstring eyeColours))
-          >> resultToOption
-          >> Option.isSome
-          "pid",
-          run' (exactlyN 9 (+) pdigit .>> pEOL)
-          >> resultToOption
-          >> Option.isSome
-          "cid", (fun _ -> true) ]
+        [ ("byr",
+           run' (pintRange 1920 2002)
+           >> resultToOption
+           >> Option.isSome)
+          ("iyr",
+           run' (pintRange 2010 2020)
+           >> resultToOption
+           >> Option.isSome)
+          ("eyr",
+           run' (pintRange 2020 2030)
+           >> resultToOption
+           >> Option.isSome)
+          ("hgt",
+           run'
+               ((pintRange 150 193 .>>. pstring "cm")
+                <|> (pintRange 59 76 .>>. pstring "in"))
+           >> resultToOption
+           >> Option.isSome)
+          ("hcl",
+           run'
+               (pchar '#'
+                .>>. (exactlyN 6 (+) (map string (anyOf hexDigit))))
+           >> resultToOption
+           >> Option.isSome)
+          ("ecl",
+           run' (choice (List.map pstring eyeColours))
+           >> resultToOption
+           >> Option.isSome)
+          ("pid",
+           run' (exactlyN 9 (+) pdigit .>> pEOL)
+           >> resultToOption
+           >> Option.isSome)
+          ("cid", (fun _ -> true)) ]
         |> Map.ofList
 
     let testKvp (key, value) =
