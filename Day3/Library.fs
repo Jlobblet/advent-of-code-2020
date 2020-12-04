@@ -29,6 +29,7 @@ let Solve (Right right) (Down down) =
     // Filter columns to keep track of horizontal movement
     |> Seq.filteri (fun (i, arr) -> (arr.[right * i % Array.length arr] = Tree))
     |> Seq.length
+    |> System.Numerics.BigInteger
 
 [<Solution("3A")>]
 let SolutionA () = Solve (Right 3) (Down 1) |> string
