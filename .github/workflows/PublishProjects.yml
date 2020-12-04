@@ -45,7 +45,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ~/AoC2020_win-x64.zip
+            asset_path: AoC2020_win-x64.zip
             asset_name: AoC2020_win-x64
             asset_content_type: application/zip
         - name: Upload linux-x64
@@ -54,7 +54,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ~/AoC2020_linux-x64.tar.xz
+            asset_path: AoC2020_linux-x64.tar.xz
             asset_name: AoC2020_linux-x64
             asset_content_type: application/zip
         - name: Upload osx-x64
@@ -63,7 +63,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ~/AoC2020_osx-x64.tar.xz
+            asset_path: AoC2020_osx-x64.tar.xz
             asset_name: AoC2020_osx-x64
             asset_content_type: application/zip
             
