@@ -28,9 +28,9 @@ jobs:
             dotnet publish --configuration Release --runtime osx-x64 -p:PublishTrimmed=true -o ~/osx-x64/Generator Generator/Generator.fsproj
         - name: Compress binaries
           run: |
-            zip -r "${PROJECT_NAME}_win-x64.zip" "~/${PROJECT_NAME}/win-x64/"
-            tar cf - "~/${PROJECT_NAME}/linux-x64/" | xz -z - > "${PROJECT_NAME}_linux-x64.tar.xz"
-            tar cf - "~/${PROJECT_NAME}/osx-x64/" | xz -z - > "${PROJECT_NAME}_osx-x64.tar.xz"
+            zip -r ${PROJECT_NAME}_win-x64.zip ~/win-x64/
+            tar cf - ~/linux-x64/ | xz -z - > ~/${PROJECT_NAME}_linux-x64.tar.xz
+            tar cf - ~/osx-x64/ | xz -z - > ~/${PROJECT_NAME}_osx-x64.tar.xz
         - name: Create release
           id: create_release
           uses: actions/create-release@v1
@@ -45,7 +45,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: AoC2020_win-x64.zip
+            asset_path: ~/AoC2020_win-x64.zip
             asset_name: AoC2020_win-x64
             asset_content_type: application/zip
         - name: Upload linux-x64
@@ -54,7 +54,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: AoC2020_linux-x64.tar.xz
+            asset_path: ~/AoC2020_linux-x64.tar.xz
             asset_name: AoC2020_linux-x64
             asset_content_type: application/zip
         - name: Upload osx-x64
@@ -63,7 +63,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: AoC2020_osx-x64.tar.xz
+            asset_path: ~/AoC2020_osx-x64.tar.xz
             asset_name: AoC2020_osx-x64
             asset_content_type: application/zip
             
