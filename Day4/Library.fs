@@ -5,16 +5,6 @@ open System.IO
 open AocReflection
 open Parsers
 
-type Passport =
-    { BirthYear: int
-      IssueYear: int
-      ExpirationYear: int
-      Height: string
-      HairColour: string
-      EyeColour: string
-      PasswordId: int
-      CountryId: int option }
-
 let getInput () =
     File
         .ReadAllText(@"Input/4")
@@ -32,25 +22,27 @@ let requiredKeys =
     |> Set.ofList
 
 
-[<Solution("4A")>]
-let SolutionA () =
-    let p =
-        sepBy (pword .>> (pchar ':' .>>. many1 pnonwhitespace)) pwhitespace
-
-    getInput ()
-    |> Array.choose (runNoSplit p >> resultToOption)
-    |> Array.where (Set.ofList >> Set.isSubset requiredKeys)
-    |> Array.length
-    |> string
-
-[<Solution("4B")>]
-let SolutionB () =
+let solve predicates =
     let p =
         sepBy
             (pword .>> pchar ':'
              .>>. map charListToString (many1 pnonwhitespace))
             pwhitespace
 
+    let (<&>) f g = (fun x -> f x && g x)
+    
+    getInput ()
+    |> Array.choose (runNoSplit p >> resultToOption)
+    |> Array.where (Seq.reduce (<&>) predicates)
+    |> Array.length
+    |> string
+
+[<Solution("4A")>]
+let SolutionA () =
+    solve [List.map fst >> Set.ofList >> Set.isSubset requiredKeys]
+
+[<Solution("4B")>]
+let SolutionB () =
     let hexDigit =
         List.concat [ [ '0' .. '9' ]
                       [ 'a' .. 'f' ] ]
@@ -105,14 +97,7 @@ let SolutionB () =
         | Some pred -> pred value
         | None -> false
 
-    let (<&>) f g = (fun x -> f x && g x)
-
-    getInput ()
-    |> Array.choose (runNoSplit p >> resultToOption)
-    |> Array.where
-        ((List.forall id << List.map testKvp)
-         <&> (List.map fst
-              >> Set.ofList
-              >> Set.isSubset requiredKeys))
-    |> Array.length
-    |> string
+    solve [ List.forall id << List.map testKvp
+            List.map fst
+            >> Set.ofList
+            >> Set.isSubset requiredKeys ]
