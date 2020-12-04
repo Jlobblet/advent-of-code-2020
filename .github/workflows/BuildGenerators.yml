@@ -42,7 +42,7 @@ jobs:
         needs: build
         steps:
         - uses: actions/download-artifact@v2
-        - name: Create relase
+        - name: Create release
           id: create_release
           uses: actions/create-release@v1
           env:
@@ -50,13 +50,14 @@ jobs:
           with:
             tag_name: ${{ github.ref }}
             release_name: ${{ github.ref }}
+        - run: pwd
         - name: Upload win-x64
           uses: actions/upload-release-asset@v1
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: etc/usr/artifacts/${PROJECT_NAME}_win-x64/${PROJECT_NAME}_win-x64.zip
+            asset_path: /home/runner/work/advent-of-code-2020/advent-of-code-2020/${{ PROJECT_NAME }}_win-x64
             asset_name: ${PROJECT_NAME}_win-x64
             asset_content_type: application/zip
         - name: Upload linux-x64
@@ -65,7 +66,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: etc/usr/artifacts/${PROJECT_NAME}_win-x64/${PROJECT_NAME}_linux-x64.zip
+            asset_path: /home/runner/work/advent-of-code-2020/advent-of-code-2020/${{ PROJECT_NAME }}_linux-x64
             asset_name: ${PROJECT_NAME}_linux-x64
             asset_content_type: application/zip
         - name: Upload osx-x64
@@ -74,7 +75,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: etc/usr/artifacts/${PROJECT_NAME}_win-x64/${PROJECT_NAME}_osx-x64.zip
+            asset_path: /home/runner/work/advent-of-code-2020/advent-of-code-2020/${{ PROJECT_NAME }}_osx-x64
             asset_name: ${PROJECT_NAME}_osx-x64
             asset_content_type: application/zip
             
