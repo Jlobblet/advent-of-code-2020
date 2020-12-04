@@ -6,7 +6,8 @@ open System.Reflection
 open AocReflection
 
 let solutions =
-    Reflection.getMethodsWithLabeledAttribute<SolutionAttribute> () |> Map.ofArray
+    Reflection.getMethodsWithLabeledAttribute<SolutionAttribute> ()
+    |> Map.ofArray
 
 let invoke (methodInfo: MethodInfo) = methodInfo.Invoke(null, null)
 

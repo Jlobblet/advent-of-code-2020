@@ -55,24 +55,31 @@ let SolutionA () = Solution validatePasswordA
 let SolutionB () = Solution validatePasswordB
 
 [<Generator("2")>]
-let generate
-    (rnd: System.Random)
-    ``number of entries to generate``
-    ``lower min bound``
-    ``lower max bound``
-    ``upper max bound``
-    =
-        
-    let letters = "abcdefghijklmnopqrstuvwxyz".ToCharArray()
-    
+let generate (rnd: System.Random)
+             ``number of entries to generate``
+             ``lower min bound``
+             ``lower max bound``
+             ``upper max bound``
+             =
+
+    let letters =
+        "abcdefghijklmnopqrstuvwxyz".ToCharArray()
+
     let generateSpec () =
-        let lower = rnd.Next(``lower min bound``, ``lower max bound``)
+        let lower =
+            rnd.Next(``lower min bound``, ``lower max bound``)
+
         let upper = rnd.Next(lower, ``upper max bound``)
         let letter = letters.[rnd.Next(0, 25)]
         let passwordLength = rnd.Next(upper, upper + 100)
-        let password = Array.init passwordLength (fun _ -> match rnd.Next(0, 50) with
-                                                           | s when s <= 25 -> letters.[s]
-                                                           | b -> letter) |> System.String
+
+        let password =
+            Array.init passwordLength (fun _ ->
+                match rnd.Next(0, 50) with
+                | s when s <= 25 -> letters.[s]
+                | b -> letter)
+            |> System.String
+
         sprintf "%i-%i %c: %s" lower upper letter password
 
     Seq.init ``number of entries to generate`` (fun _ -> generateSpec ())
