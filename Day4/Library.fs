@@ -58,40 +58,24 @@ let SolutionB () =
           "hzl"
           "oth" ]
 
+    let ppred parser =
+        run' parser >> resultToOption >> Option.isSome
+
     let predicates =
-        [ ("byr",
-           run' (pintRange 1920 2002)
-           >> resultToOption
-           >> Option.isSome)
-          ("iyr",
-           run' (pintRange 2010 2020)
-           >> resultToOption
-           >> Option.isSome)
-          ("eyr",
-           run' (pintRange 2020 2030)
-           >> resultToOption
-           >> Option.isSome)
+        [ ("byr", ppred (pintRange 1920 2002))
+          ("iyr", ppred (pintRange 2010 2020))
+          ("eyr", ppred (pintRange 2020 2030))
           ("hgt",
-           run'
+           ppred
                ((pintRange 150 193 .>>. pstring "cm")
-                <|> (pintRange 59 76 .>>. pstring "in"))
-           >> resultToOption
-           >> Option.isSome)
+                <|> (pintRange 59 76 .>>. pstring "in")))
           ("hcl",
-           run'
+           ppred
                (pchar '#'
                 .>>. (exactlyN 6 (+) (map string (anyOf hexDigit)))
-                .>>. pEOL)
-           >> resultToOption
-           >> Option.isSome)
-          ("ecl",
-           run' (choice (List.map pstring eyeColours))
-           >> resultToOption
-           >> Option.isSome)
-          ("pid",
-           run' (exactlyN 9 (+) pdigit .>> pEOL)
-           >> resultToOption
-           >> Option.isSome)
+                .>>. pEOL))
+          ("ecl", ppred (choice (List.map pstring eyeColours)))
+          ("pid", ppred (exactlyN 9 (+) pdigit .>> pEOL))
           ("cid", (fun _ -> true)) ]
         |> Map.ofList
 
