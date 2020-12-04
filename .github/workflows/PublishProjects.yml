@@ -29,8 +29,8 @@ jobs:
         - name: Compress binaries
           run: |
             zip -r ${PROJECT_NAME}_win-x64.zip ~/win-x64/
-            tar cJf ~/${PROJECT_NAME}_linux-x64.tar.xz ~/linux-x64/
-            tar cJf ~/${PROJECT_NAME}_osx-x64.tar.xz ~/osx-x64/
+            tar cJf ${PROJECT_NAME}_linux-x64.tar.xz ~/linux-x64/
+            tar cJf ${PROJECT_NAME}_osx-x64.tar.xz ~/osx-x64/
         - name: Create release
           id: create_release
           uses: actions/create-release@v1
@@ -39,7 +39,6 @@ jobs:
           with:
             tag_name: ${{ github.ref }}
             release_name: ${{ github.ref }}
-        - run: ls ~
         - name: Upload win-x64
           uses: actions/upload-release-asset@v1
           env:
