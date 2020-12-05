@@ -6,7 +6,7 @@
 
     <ItemGroup>
         <Compile Include="Parsers.fs" />
-        <Compile Include="Library.fs" />
+        <Compile Include="Solution.fs" />
         <Compile Include="Generator.fs" />
     </ItemGroup>
 
