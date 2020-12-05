@@ -182,10 +182,10 @@ let andThen parser1 parser2 =
 let (.>>.) = andThen
 
 let (.>>) parser1 parser2 =
-    parser1 .>>. parser2 |> map (fun (a, _) -> a)
+    parser1 .>>. parser2 |>> (fun (a, _) -> a)
 
 let (>>.) parser1 parser2 =
-    parser1 .>>. parser2 |> map (fun (_, b) -> b)
+    parser1 .>>. parser2 |>> (fun (_, b) -> b)
 
 let between parser1 parser2 parser3 = parser1 >>. parser2 .>> parser3
 
@@ -224,7 +224,8 @@ let pstring (str: string) =
     |> List.ofSeq
     |> List.map pchar
     |> sequence
-    |> map charListToString
+    |>> charListToString
+    <?> sprintf "string %s" str
 
 let rec parseZeroPlus parser input =
     match run parser input with
@@ -274,7 +275,7 @@ let pint =
 
     let digits = many1 pdigit
 
-    opt (pchar '-') .>>. digits |> map resultToInt
+    (opt (pchar '-') .>>. digits) |>> resultToInt
     <?> label
 
 let pintRange lower upper =
@@ -298,6 +299,7 @@ let pletter =
     List.concat [ [ 'a' .. 'z' ]
                   [ 'A' .. 'Z' ] ]
     |> anyOf
+    <?> label
 
 let pword =
     let label = "word"
@@ -305,14 +307,14 @@ let pword =
     [ pletter; pdigit; pchar '_' ]
     |> choice
     |> many1
-    |> map charListToString
+    |>> charListToString
     <?> label
 
 let exactlyN N (combine: 'a -> 'a -> 'a) (parser: Parser<'a>) =
     let uncurry f (a, b) = f a b
 
     Seq.replicate N parser
-    |> Seq.reduce (fun acc elt -> (map (uncurry combine)) (acc .>>. elt))
+    |> Seq.reduce (fun acc elt -> (uncurry combine) <!> (acc .>>. elt))
 
 let pEOL =
     let label = "EOL"

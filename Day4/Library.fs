@@ -26,7 +26,7 @@ let solve predicates =
     let p =
         sepBy
             (pword .>> pchar ':'
-             .>>. map charListToString (many1 pnonwhitespace))
+             .>>. (charListToString <!> many1 pnonwhitespace))
             pwhitespace
 
     let (<&>) f g = (fun x -> f x && g x)
@@ -72,7 +72,7 @@ let SolutionB () =
           ("hcl",
            ppred
                (pchar '#'
-                .>>. (exactlyN 6 (+) (map string (anyOf hexDigit)))
+                .>>. (exactlyN 6 (+) (string <!> (anyOf hexDigit)))
                 .>>. pEOL))
           ("ecl", ppred (choice (List.map pstring eyeColours)))
           ("pid", ppred (exactlyN 9 (+) pdigit .>> pEOL))
@@ -84,7 +84,7 @@ let SolutionB () =
         | Some pred -> pred value
         | None -> false
 
-    solve [ List.forall id << List.map testKvp
+    solve [ List.map testKvp >> List.forall id
             List.map fst
             >> Set.ofList
             >> Set.isSubset requiredKeys ]
