@@ -32,11 +32,13 @@ let Solve location (Right right) (Down down) =
     |> System.Numerics.BigInteger
 
 [<Solution("3A")>]
-let SolutionA location = Solve location (Right 3) (Down 1) |> string
+let SolutionA location =
+    Solve location (Right 3) (Down 1) |> string
 
 [<Solution("3B")>]
 let SolutionB location =
     let Solve' = Solve location
+
     [ Solve' (Right 1) (Down 1)
       Solve' (Right 3) (Down 1)
       Solve' (Right 5) (Down 1)

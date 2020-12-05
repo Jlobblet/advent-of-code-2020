@@ -16,6 +16,7 @@ let main argv =
     while true do
         let rec getInput () =
             let inp = Console.ReadLine().ToUpper()
+
             match solutions.TryFind(inp) with
             | Some solution -> (solution, inp)
             | None -> getInput ()
@@ -26,17 +27,21 @@ let main argv =
         |> printf "Select solution to run:\n%s\nEnter selection: "
 
         let (solution, inp) = getInput ()
-        
+
         let rec getFilepath () =
             match Console.ReadLine() with
-            | "" -> sprintf "Input/%s" (['A' .. 'Z'] |> List.fold (fun acc elt -> acc.Replace(string elt, "")) inp)
+            | "" ->
+                sprintf
+                    "Input/%s"
+                    ([ 'A' .. 'Z' ]
+                     |> List.fold (fun acc elt -> acc.Replace(string elt, "")) inp)
             | l -> l
-            
+
         printf "Enter filepath (blank for default): "
         let fp = getFilepath () :> obj
 
         let sw = Stopwatch.StartNew()
-        let result = solution |> invoke [|fp|]
+        let result = solution |> invoke [| fp |]
         sw.Stop()
         printfn "%O" result
         printfn "Execution time: %A (%ims)\n" sw.Elapsed sw.ElapsedMilliseconds

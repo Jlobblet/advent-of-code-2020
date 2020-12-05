@@ -21,7 +21,7 @@ let requiredKeys =
       "ecl"
       "pid" ]
     |> Set.ofList
-    
+
 let hexDigit =
     List.concat [ [ '0' .. '9' ]
                   [ 'a' .. 'f' ] ]
@@ -53,9 +53,11 @@ let solve location predicates =
 
 [<Solution("4A")>]
 let SolutionA location =
-    solve location [ List.map fst
-                     >> Set.ofList
-                     >> Set.isSubset requiredKeys ]
+    solve
+        location
+        [ List.map fst
+          >> Set.ofList
+          >> Set.isSubset requiredKeys ]
 
 [<Solution("4B")>]
 let SolutionB location =
@@ -85,7 +87,9 @@ let SolutionB location =
         | Some pred -> pred value
         | None -> false
 
-    solve location [ List.map testKvp >> List.forall id
-                     List.map fst
-                     >> Set.ofList
-                     >> Set.isSubset requiredKeys ]
+    solve
+        location
+        [ List.map testKvp >> List.forall id
+          List.map fst
+          >> Set.ofList
+          >> Set.isSubset requiredKeys ]

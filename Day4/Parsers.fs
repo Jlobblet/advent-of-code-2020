@@ -301,7 +301,7 @@ let pletter =
 let pword =
     let label = "word"
 
-    [ pletter; pdigit; pchar '_' ]|> choice |> many1
+    [ pletter; pdigit; pchar '_' ] |> choice |> many1
     |>> charListToString
     <?> label
 
