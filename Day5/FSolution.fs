@@ -7,10 +7,11 @@ open AocReflection
 open Day5
 
 let replaceAll (s: string) =
-    s.Replace("F", "0")
-     .Replace("B", "1")
-     .Replace("L", "0")
-     .Replace("R", "1")
+    s
+        .Replace("F", "0")
+        .Replace("B", "1")
+        .Replace("L", "0")
+        .Replace("R", "1")
 
 let binaryToInt s = Convert.ToInt32(s, 2)
 
@@ -20,7 +21,7 @@ let SolutionAf input =
     |> Array.map (replaceAll >> binaryToInt)
     |> Array.max
     |> string
-    
+
 [<Solution("5BF")>]
 let SolutionBf input =
     getInput input

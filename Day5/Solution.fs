@@ -20,22 +20,22 @@ let combine a b = 2 * a + b
 let pBinaryChars zero one =
     (pchar zero <|> pchar one <?> "binary number")
     |>> (function
-         | z when z = zero -> 0
-         | o when o = one -> 1
-         | u -> failwith <| sprintf "unknown char %c" u)
+    | z when z = zero -> 0
+    | o when o = one -> 1
+    | u -> failwith <| sprintf "unknown char %c" u)
 
 let pFB = pBinaryChars 'F' 'B'
 
 let pRow = (*) 8 <!> exactlyN 7 combine pFB
 
 let pLR = pBinaryChars 'L' 'R'
-    
+
 let pCol = exactlyN 3 combine pLR
 
-let pSeatId = (uncurry (+)) <!> (pRow .>>. pCol .>> pEOL)
+let pSeatId =
+    (uncurry (+)) <!> (pRow .>>. pCol .>> pEOL)
 
-let getInput input =
-    File.ReadAllLines(input)
+let getInput input = File.ReadAllLines(input)
 
 [<Solution("5A")>]
 let SolutionA input =
@@ -54,5 +54,3 @@ let SolutionB input =
     |> Array.head
     |> (+) 1
     |> sprintf "%A"
-
-
