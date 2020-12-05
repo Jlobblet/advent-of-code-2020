@@ -7,6 +7,7 @@
     <ItemGroup>
         <Compile Include="Solution.fs" />
         <Compile Include="FSolution.fs" />
+        <Compile Include="Generator.fs" />
     </ItemGroup>
 
     <ItemGroup>
