@@ -20,6 +20,19 @@ let requiredKeys =
       "ecl"
       "pid" ]
     |> Set.ofList
+    
+let hexDigit =
+    List.concat [ [ '0' .. '9' ]
+                  [ 'a' .. 'f' ] ]
+
+let eyeColours =
+    [ "amb"
+      "blu"
+      "brn"
+      "gry"
+      "grn"
+      "hzl"
+      "oth" ]
 
 
 let solve predicates =
@@ -45,19 +58,6 @@ let SolutionA () =
 
 [<Solution("4B")>]
 let SolutionB () =
-    let hexDigit =
-        List.concat [ [ '0' .. '9' ]
-                      [ 'a' .. 'f' ] ]
-
-    let eyeColours =
-        [ "amb"
-          "blu"
-          "brn"
-          "gry"
-          "grn"
-          "hzl"
-          "oth" ]
-
     let ppred parser =
         run' parser >> resultToOption >> Option.isSome
 
