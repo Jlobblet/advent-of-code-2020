@@ -1,4 +1,4 @@
-// Solutions to Day 5 that are less nice but run signficantly faster
+// Solutions to Day 5 that are less nice but run significantly faster
 
 module Day5.FSolution
 
