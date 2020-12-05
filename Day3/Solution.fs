@@ -19,11 +19,11 @@ let createCell char =
 let parseRow (str: string) =
     str.ToCharArray() |> Array.map createCell
 
-let private getInput () =
-    File.ReadAllLines @"Input/3" |> Seq.map parseRow
+let getInput location =
+    File.ReadAllLines location |> Seq.map parseRow
 
-let Solve (Right right) (Down down) =
-    getInput ()
+let Solve location (Right right) (Down down) =
+    getInput location
     // Filter rows to keep track of vertical movement
     |> Seq.filteri (fun (i, _) -> i % down = 0)
     // Filter columns to keep track of horizontal movement
@@ -32,14 +32,15 @@ let Solve (Right right) (Down down) =
     |> System.Numerics.BigInteger
 
 [<Solution("3A")>]
-let SolutionA () = Solve (Right 3) (Down 1) |> string
+let SolutionA location = Solve location (Right 3) (Down 1) |> string
 
 [<Solution("3B")>]
-let SolutionB () =
-    [ Solve (Right 1) (Down 1)
-      Solve (Right 3) (Down 1)
-      Solve (Right 5) (Down 1)
-      Solve (Right 7) (Down 1)
-      Solve (Right 1) (Down 2) ]
+let SolutionB location =
+    let Solve' = Solve location
+    [ Solve' (Right 1) (Down 1)
+      Solve' (Right 3) (Down 1)
+      Solve' (Right 5) (Down 1)
+      Solve' (Right 7) (Down 1)
+      Solve' (Right 1) (Down 2) ]
     |> List.reduce (*)
     |> string

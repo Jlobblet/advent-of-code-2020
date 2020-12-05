@@ -5,9 +5,9 @@ open System.IO
 open AocReflection
 open Parsers
 
-let getInput () =
+let getInput location =
     File
-        .ReadAllText(@"Input/4")
+        .ReadAllText(location)
         .Split(Array.replicate 2 Environment.NewLine
                |> String.concat "")
 
@@ -35,7 +35,7 @@ let eyeColours =
       "oth" ]
 
 
-let solve predicates =
+let solve location predicates =
     let p =
         sepBy
             (pword .>> pchar ':'
@@ -44,20 +44,20 @@ let solve predicates =
 
     let (<&>) f g = (fun x -> f x && g x)
 
-    getInput ()
+    getInput location
     |> Array.choose (runNoSplit p >> resultToOption)
     |> Array.where (Seq.reduce (<&>) predicates)
     |> Array.length
     |> string
 
 [<Solution("4A")>]
-let SolutionA () =
-    solve [ List.map fst
-            >> Set.ofList
-            >> Set.isSubset requiredKeys ]
+let SolutionA location =
+    solve location [ List.map fst
+                     >> Set.ofList
+                     >> Set.isSubset requiredKeys ]
 
 [<Solution("4B")>]
-let SolutionB () =
+let SolutionB location =
     let ppred parser =
         run' parser >> resultToOption >> Option.isSome
 
@@ -84,7 +84,7 @@ let SolutionB () =
         | Some pred -> pred value
         | None -> false
 
-    solve [ List.map testKvp >> List.forall id
-            List.map fst
-            >> Set.ofList
-            >> Set.isSubset requiredKeys ]
+    solve location [ List.map testKvp >> List.forall id
+                     List.map fst
+                     >> Set.ofList
+                     >> Set.isSubset requiredKeys ]

@@ -16,13 +16,13 @@ let cartesianProduct seqs =
                 for y in acc -> x :: y
         }) seqs (Seq.singleton [])
 
-let private readInput () =
-    File.ReadLines @"Input/1"
+let readInput location =
+    File.ReadLines location
     |> Seq.choose tryInt
     |> Seq.sort
 
-let SolveN N =
-    let numbers = readInput ()
+let SolveN location N =
+    let numbers = readInput location
 
     Seq.replicate N numbers
     |> cartesianProduct
@@ -31,7 +31,7 @@ let SolveN N =
     |> string
 
 [<Solution("1A")>]
-let SolutionA () = SolveN 2
+let SolutionA location = SolveN location 2
 
 [<Solution("1B")>]
-let SolutionB () = SolveN 3
+let SolutionB location = SolveN location 3

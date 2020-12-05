@@ -220,10 +220,7 @@ let rec sequence parsers =
     | head :: tail -> cons head (sequence tail)
 
 let pstring (str: string) =
-    str
-    |> List.ofSeq
-    |> List.map pchar
-    |> sequence
+    str |> List.ofSeq |> List.map pchar |> sequence
     |>> charListToString
     <?> sprintf "string %s" str
 
@@ -304,9 +301,7 @@ let pletter =
 let pword =
     let label = "word"
 
-    [ pletter; pdigit; pchar '_' ]
-    |> choice
-    |> many1
+    [ pletter; pdigit; pchar '_' ]|> choice |> many1
     |>> charListToString
     <?> label
 
