@@ -75,7 +75,7 @@ let SolutionB location =
                 .>>. (exactlyN 6 (+) (string <!> (anyOf hexDigit)))
                 .>>. pEOL))
           ("ecl", ppred (choice (List.map pstring eyeColours)))
-          ("pid", ppred (exactlyN 9 (+) pdigit .>> pEOL))
+          ("pid", ppred (exactlyN 9 (+) (string <!> pdigit) .>> pEOL))
           ("cid", (fun _ -> true)) ]
         |> Map.ofList
 
