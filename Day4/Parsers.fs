@@ -2,6 +2,8 @@ module Day4.Parsers
 
 open System
 
+let uncurry f (a, b) = f a b
+
 let charListToString charList = String(charList |> Array.ofList)
 
 type Position = { line: int; column: int }
@@ -70,16 +72,18 @@ type ParserResult<'T> = Result<'T * ParserState, ParserLabel * ParserError * Par
 type Parser<'T> =
     { parser: (ParserState -> ParserResult<'T>)
       label: ParserLabel }
+    
+let formatError label error pos =
+    let str = pos.currentLine
+    let col = pos.column
+    let line = pos.line
+    let caret = sprintf "%*s^ %s" col "" error
+    sprintf "Line: %i Column: %i Error parsing %s\n%s\n%s" line col label str caret
 
 let resultToString r =
     match r with
     | Ok (v, _) -> sprintf "%A" v
-    | Error (label, error, pos) ->
-        let str = pos.currentLine
-        let col = pos.column
-        let line = pos.line
-        let caret = sprintf "%*s^ %s" col "" error
-        sprintf "Line: %i Column: %i Error parsing %s\n%s\n%s" line col label str caret
+    | Error (label, error, pos) -> formatError label error pos
 
 let printResult r = printfn "%s" <| resultToString r
 
@@ -140,14 +144,12 @@ let pnonwhitespace =
     satisfy predicate label
 
 let bind f parser =
-    let label = "bind"
-
     let inner input =
         match run parser input with
         | Error e -> Error e
         | Ok (value, remaining) -> run (f value) remaining
 
-    { parser = inner; label = label }
+    { parser = inner; label = parser.label }
 
 let (>>=) p f = bind f p
 
@@ -305,9 +307,7 @@ let pword =
     |>> charListToString
     <?> label
 
-let exactlyN N (combine: 'a -> 'a -> 'a) (parser: Parser<'a>) =
-    let uncurry f (a, b) = f a b
-
+let exactlyN N combine parser =
     Seq.replicate N parser
     |> Seq.reduce (fun acc elt -> (uncurry combine) <!> (acc .>>. elt))
 
