@@ -6,10 +6,11 @@ open AocReflection
 open Parsers
 
 let getInput location =
+    let newLines = [| "\n"; "\r\n"; "\r" |]
+
     File
         .ReadAllText(location)
-        .Split(Array.replicate 2 Environment.NewLine
-               |> String.concat "")
+        .Split(newLines, StringSplitOptions.RemoveEmptyEntries)
 
 let requiredKeys =
     [ "byr"
