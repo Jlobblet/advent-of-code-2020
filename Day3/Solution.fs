@@ -27,9 +27,9 @@ let Solve location (Right right) (Down down) =
     // Filter rows to keep track of vertical movement
     |> Seq.filteri (fun (i, _) -> i % down = 0)
     // Filter columns to keep track of horizontal movement
-    |> Seq.filteri (fun (i, arr) -> (arr.[right * i % Array.length arr] = Tree))
+    |> Seq.filteri (fun (i, row) -> (row.[right * i % Array.length row] = Tree))
     |> Seq.length
-    |> System.Numerics.BigInteger
+    |> bigint
 
 [<Solution("3A")>]
 let SolutionA location =
