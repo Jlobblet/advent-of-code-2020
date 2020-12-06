@@ -72,7 +72,7 @@ type ParserResult<'T> = Result<'T * ParserState, ParserLabel * ParserError * Par
 type Parser<'T> =
     { parser: (ParserState -> ParserResult<'T>)
       label: ParserLabel }
-    
+
 let formatError label error pos =
     let str = pos.currentLine
     let col = pos.column

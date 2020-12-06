@@ -9,7 +9,6 @@ let getInput location =
     |> String.concat "\n"
     |> (fun s -> s.Split("\n\n"))
 
-
 [<Solution("6A")>]
 let SolutionA input =
     getInput input

@@ -21,7 +21,6 @@ let generate (rnd: System.Random) ``width of block`` ``height Of block`` ``mean 
 
     let map =
         Array.init ``height Of block`` (fun _ -> generateRow ``width of block``)
-
     map.[0].[0] <- Open
 
     map |> Array.map rowToString |> String.concat "\n"
