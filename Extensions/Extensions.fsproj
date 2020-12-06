@@ -8,6 +8,7 @@
     <ItemGroup>
       <Compile Include="MapExtensions.fs" />
       <Compile Include="SeqExtenion.fs" />
+      <Compile Include="NaturalSort.fs" />
     </ItemGroup>
 
 </Project>

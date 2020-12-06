@@ -23,6 +23,7 @@ let main argv =
 
         solutions
         |> Map.keys
+        |> Seq.sortWith Extensions.NaturalSort.naturalCompare
         |> String.concat "\n"
         |> printf "Select solution to run:\n%s\nEnter selection: "
 
