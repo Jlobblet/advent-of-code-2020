@@ -6,11 +6,9 @@ open AocReflection
 open Parsers
 
 let getInput location =
-    let newLines = [| "\n"; "\r\n"; "\r" |]
-
-    File
-        .ReadAllText(location)
-        .Split(newLines, StringSplitOptions.RemoveEmptyEntries)
+    File.ReadAllLines(location)
+    |> String.concat "\n"
+    |> (fun s -> s.Split("\n\n"))
 
 let requiredKeys =
     [ "byr"
@@ -76,7 +74,7 @@ let SolutionB location =
            ppred
                (pchar '#'
                 .>>. (exactlyN 6 (+) (string <!> (anyOf hexDigit)))
-                .>>. pEOL))
+                .>> pEOL))
           ("ecl", ppred (choice (List.map pstring eyeColours)))
           ("pid", ppred (exactlyN 9 (+) (string <!> pdigit) .>> pEOL))
           ("cid", (fun _ -> true)) ]
