@@ -17,20 +17,9 @@ let eyeColours =
 
 
 let (|HexNumber|_|) =
-    let (|HexDigit|_|) =
-        (Day4.hexDigit
-         |> List.map (|CharPattern|_|)
-         |> List.reduce (<|>))
-
-    (|CharPattern|_|) '#'
-    .>>. (|HexDigit|_|)
-    .>>. (|HexDigit|_|)
-    .>>. (|HexDigit|_|)
-    .>>. (|HexDigit|_|)
-    .>>. (|HexDigit|_|)
-    .>>. (|HexDigit|_|)
-    // todo cleanse
-    <!> (fun (((((((g, f), e), d), c), b), a), rest) -> sprintf "%c%c%c%c%c%c%c" a b c d e f g, rest)
+    (|StringPattern|_|) "#"
+    .>>. (|ExactlyNTimes|_|) 6 (fun c -> List.contains c Day4.hexDigit)
+    <!> (fun ((h, ds), rest) -> h + ds, rest)
 
 let (|Byr|_|) =
     (|StringPattern|_|) "byr:"
