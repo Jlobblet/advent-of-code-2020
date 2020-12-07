@@ -8,11 +8,16 @@
         <Compile Include="Parsers.fs" />
         <Compile Include="Solution.fs" />
         <Compile Include="FSolution.fs" />
+        <Compile Include="PatternSolution2.fs" />
         <Compile Include="Generator.fs" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\AocReflection\AocReflection.fsproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FParsec" Version="1.1.1" />
     </ItemGroup>
 
 </Project>
