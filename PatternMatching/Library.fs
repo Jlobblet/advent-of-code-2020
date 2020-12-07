@@ -4,6 +4,8 @@ open System
 
 let uncurry f (a, b) = f a b
 
+let (|Return|_|) = Some
+
 let (>>=) P f = P >> Option.bind f
 
 let (<!>) P f = P >> Option.map f
@@ -92,3 +94,48 @@ let (|Word|_|) (input: string) =
     | empty when Seq.isEmpty empty -> None
     | nonempty -> Some(input.Substring(0, Seq.length nonempty), input.Substring(Seq.length nonempty).TrimStart())
     | _ -> None
+
+let rec ZeroPlus P1 input =
+    match P1 input with
+    | None -> ([], input)
+    | Some (value1, remaining1) ->
+        let (valueRest, remainingRest) = ZeroPlus P1 remaining1
+        (value1 :: valueRest, remainingRest)
+
+let (|Many|_|) P1 =
+    let rec inner input = Some(ZeroPlus P1 input)
+    inner
+
+let (|Many1|_|) (|P1|_|) =
+    let rec inner input =
+        match input with
+        | P1 (value1, remaining1) ->
+            let (valueRest, remainingRest) = ZeroPlus (|P1|_|) remaining1
+            Some(value1 :: valueRest, remainingRest)
+        | _ -> None
+
+    inner
+
+let (|SepBy1|_|) (|Sep|_|) (|P1|_|) =
+    (|P1|_|)
+    .>>. (|Many|_|) (((|Sep|_|) >>. (|P1|_|)))
+    <!> (fun ((head, tail), rest) -> head :: tail, rest)
+
+let (|SepBy|_|) (|Sep|_|) (|P1|_|) (input: string) =
+    match input with
+    | SepBy1 (|Sep|_|) (|P1|_|) a -> Some a
+    | _ -> Some([], input)
+
+let (|SplitOn|_|) (sep: string []) (|P1|_|) (input: string) =
+    let a =
+        input.Split
+            (sep,
+             StringSplitOptions.RemoveEmptyEntries
+             ||| StringSplitOptions.TrimEntries)
+        |> Array.toList
+
+    a
+    |> List.choose (function
+        | P1 (a, b) -> Some a
+        | _ -> None)
+    |> Some
