@@ -37,13 +37,7 @@ let (<|>) (|P1|_|) (|P2|_|) x =
     | _ -> None
 
 let (|ExactlyNTimes|_|) N pred (input: string) =
-    let hits = input |> Seq.take N
-    let after = input |> Seq.skip N
-
-    match (hits |> Seq.forall pred)
-          && (after
-              |> Seq.truncate 1
-              |> Seq.forall (not << pred)) with
+    match (Seq.length input >= N && input |> Seq.take N |> Seq.forall pred) with
     | true -> Some(input.Substring(0, N), input.Substring(N))
     | false -> None
 
