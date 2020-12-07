@@ -110,20 +110,19 @@ let (|Many1|_|) (|P1|_|) =
 
     inner
 
-let (|SepBy1|_|) (|Sep|_|) (|P1|_|) =
-    (|P1|_|)
-    .>>. (|Many|_|) (((|Sep|_|) >>. (|P1|_|)))
+let (|SepBy1|_|) Sep P1 =
+    P1 .>>. (|Many|_|) ((Sep >>. P1))
     <!> (fun ((head, tail), rest) -> head :: tail, rest)
 
-let (|SepBy|_|) (|Sep|_|) (|P1|_|) (input: string) =
-    match input with
-    | SepBy1 (|Sep|_|) (|P1|_|) a -> Some a
-    | _ -> Some([], input)
+let (|SepBy|_|) Sep P1 =
+    function
+    | SepBy1 Sep P1 a -> Some a
+    | a -> Some([], a)
 
-let (|SplitOn|_|) (sep: string []) (|P1|_|) (input: string) =
+let (|SplitOn|_|) (Seps: string []) (|P1|_|) (input: string) =
     let a =
         input.Split
-            (sep,
+            (Seps,
              StringSplitOptions.RemoveEmptyEntries
              ||| StringSplitOptions.TrimEntries)
         |> Array.toList

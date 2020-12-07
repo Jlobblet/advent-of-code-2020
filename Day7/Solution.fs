@@ -18,7 +18,7 @@ let (|Contents|_|) =
     .>>. ((|BagName|_|)
           .>> ((|StringPattern|_|) "bags"
                <|> (|StringPattern|_|) "bag"))
-    
+
 let (|Bag|_|) =
     (|BagName|_|)
     .>> (|StringPattern|_|) "bags contain "
