@@ -7,37 +7,27 @@ open PatternMatching.Patterns
 
 let curry f a b = f (a, b)
 
-let (|Word|_|) (input: string) =
-    match input |> Seq.takeWhile (not << Char.IsWhiteSpace) with
-    | empty when Seq.isEmpty empty -> None
-    | nonempty -> Some(input.Substring(0, Seq.length nonempty), input.Substring(Seq.length nonempty).TrimStart())
-    | _ -> None
-
 let concatName = sprintf "%s %s"
 
 let (|BagName|_|) =
     (|Word|_|) .>>. (|Word|_|)
     <!> (fun ((adj, clr), rest) -> concatName adj clr, rest)
 
-let (|Bag|_|) =
-    (|BagName|_|)
-    .>> (|StringPattern|_|) "bags contain "
-
 let (|Contents|_|) =
     (|IntPattern|_|)
     .>>. ((|BagName|_|)
-          .>> ((|StringPattern|_|) "bag"
-               <|> (|StringPattern|_|) "bags"))
-    <!> (fun ((num, clr), _) -> num, clr)
+          .>> ((|StringPattern|_|) "bags"
+               <|> (|StringPattern|_|) "bag"))
+    
+let (|Bag|_|) =
+    (|BagName|_|)
+    .>> (|StringPattern|_|) "bags contain "
+    .>>. (|SepBy|_|) ((|StringPattern|_|) ", ") (|Contents|_|)
+    <!> fst
 
 let parseLine line =
     match line with
-    | Bag (name, contents) ->
-        Some
-            (name,
-             contents.Split(",", StringSplitOptions.TrimEntries)
-             |> List.ofArray
-             |> List.choose (|Contents|_|))
+    | Bag (name, contents) -> Some(name, contents)
     | _ -> None
 
 let rec containsBag map target name =
