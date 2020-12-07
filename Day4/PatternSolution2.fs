@@ -5,6 +5,37 @@ open AocReflection
 
 let uncurry f (a, b) = f a b
 
+let (>>=) P f = P >> Option.bind f
+
+let (<!>) P f = P >> Option.map f
+
+let (.>>.) P1 P2 =
+    P1
+    >> Option.bind (fun (b, c) -> c |> (P2 <!> (fun (c', d) -> (b, c'), d)))
+
+let (.>>) P1 P2 =
+    P1 .>>. P2 <!> (fun ((b, _), e) -> (b, e))
+
+let (>>.) P1 P2 = P1 .>>. P2 <!> (fun ((_, d), e) -> (d, e))
+
+let (.>>|) P1 P2 = P1 .>> P2 <!> (fst)
+
+let (<&>) (P1: 'a -> ('b * 'c) option) (P2: 'a -> ('d * 'e) option) (input: 'a) =
+    match P1 input with
+    | None -> None
+    | Some (b, c) ->
+        match P2 input with
+        | None -> None
+        | Some (d, e) -> Some((b, d), e)
+
+let (<|>) (|P1|_|) (|P2|_|) x =
+    match x with
+    | P1 r -> Some r
+    | P2 r -> Some r
+    | _ -> None
+
+let (~%%) P1 = Option.bind P1
+
 let eyeColours =
     [ "amb"
       "blu"
@@ -13,6 +44,13 @@ let eyeColours =
       "grn"
       "hzl"
       "oth" ]
+    
+let (|ExactlyNTimes|_|) N pred (input: string) =
+    let hits = input |> Seq.take N
+    let after = input |> Seq.skip N
+    match (hits |> Seq.forall pred) && (after |> Seq.truncate 1 |> Seq.forall (not << pred)) with
+    | true -> Some(input.Substring(0, N), input.Substring(N))
+    | false -> None
 
 let (|CharPattern|_|) (target: char) (input: string) =
     match Seq.tryHead input with
@@ -24,148 +62,113 @@ let (|StringPattern|_|) (target: string) (input: string) =
     | true -> Some(target, input.Substring(target.Length))
     | false -> None
 
-let (|MinusSign|_|) = (|CharPattern|_|) '-'
+let (|MinusSign|_|) = ((|CharPattern|_|) '-') <!> snd
 
 let (|Digits|_|) (input: string) =
     match input.Substring(0, input |> Seq.takeWhile Char.IsNumber |> Seq.length) with
     | "" -> None
     | d -> Some(d, input.Substring(d.Length))
+    
+let (|NDigits|_|) N (input: string) =
+    match Seq.truncate N input with
+    | ds when Seq.length ds = N && Seq.forall Char.IsNumber ds -> Some(input.Substring(0, N), input.Substring(N))
+    | _ -> None
 
 let (|IntPattern|_|) (input: string) =
     match input with
-    | MinusSign (_, Digits (digits, rest)) -> Some(-(int digits), rest.TrimStart())
+    | MinusSign (Digits (digits, rest)) -> Some(-(int digits), rest.TrimStart())
     | Digits (digits, rest) -> Some(int digits, rest.TrimStart())
     | _ -> None
 
-let (|IntRangePattern|_|) min max (input: int) =
+let (|IntRangePattern|_|) min max input =
     match input with
-    | i when i <= max && i >= min -> Some IntRangePattern
+    | IntPattern (i, r) when i <= max && i >= min -> Some (i, r)
     | _ -> None
-
-//let (.>>.) (|P1|_|) (|P2|_|) (input: string) =
-//    match input with
-//    | P1 (m, r) ->
-//        match r with
-//        | P2 (m', r') -> Some(m, (m', r'))
-//        | _ -> None
-//    | _ -> None
-let (>>=) P f = P >> Option.bind f
-
-let (<!>) P f = P >> Option.map f
-
-let (.>>.) P1 P2 =
-    P1
-    >> Option.bind (fun (b, c) -> c |> (P2 <!> (fun (c', d) -> (b, (c', d)))))
-
-let (.>>) P1 P2 =
-    P1 .>>. P2 <!> (fun (b, (_, e)) -> (b, e))
-
-let (>>.) P1 P2 = P1 .>>. P2 <!> snd
-
-let (<|>) (|P1|_|) (|P2|_|) x =
-    match x with
-    | P1 r -> Some r
-    | P2 r -> Some r
-    | _ -> None
-
-let (~%%) P1 = Option.bind P1
-
-//let exactlyN N combine (P1: 'a -> ('b * 'a) option) (input: 'a) =
-//    List.replicate N P1
-//    |> List.fold (fun (lis, inp) elt ->
-//        match lis with
-//        | Some l ->
-//            match elt inp with
-//            | Some (h, r) -> Some(combine h l), r
-//            | None -> None, inp
-//        | None -> None, inp)
-//        (Some [], input)
-
-let (|Byr|_|) =
-    (|StringPattern|_|) "byr:" >>. (|IntPattern|_|)
-
-let (|Iyr|_|) =
-    (|StringPattern|_|) "iyr:" >>. (|IntPattern|_|)
-
-let (|Eyr|_|) =
-    (|StringPattern|_|) "eyr:" >>. (|IntPattern|_|)
-
-let (|Hgt|_|) =
-    (|StringPattern|_|) "hgt:"
-    >>. (((|IntPattern|_|) .>>. (|StringPattern|_|) "cm")
-         <|> ((|IntPattern|_|) .>>. (|StringPattern|_|) "in"))
-//    <!> (fun (a, (b, c)) -> sprintf "%i%s" a b, c)
-
-let (|Hcl|_|) = (|StringPattern|_|) "hcl:"
-
-let (|Ecl|_|) = (|StringPattern|_|) "ecl:"
-
-let (|Pid|_|) = (|StringPattern|_|) "pid:"
-//    >>.
-
-let (|Cid|_|) =
-    (|StringPattern|_|) "cid:" <!> (fun _ -> ())
-
+    
 let (|HexNumber|_|) =
     let (|HexDigit|_|) =
         (Day4.hexDigit
          |> List.map (|CharPattern|_|)
          |> List.reduce (<|>))
 
-    let combine (cs, (c2, r)) = c2 :: cs, r
-
     (|CharPattern|_|) '#'
-    <!> (fun (c, r) -> List.singleton c, r)
     .>>. (|HexDigit|_|)
-    <!> combine
     .>>. (|HexDigit|_|)
-    <!> combine
     .>>. (|HexDigit|_|)
-    <!> combine
     .>>. (|HexDigit|_|)
-    <!> combine
     .>>. (|HexDigit|_|)
-    <!> combine
     .>>. (|HexDigit|_|)
-    <!> combine
+    // todo cleanse
+    <!> (fun (((((((g, f), e), d), c), b), a), rest) -> sprintf "%c%c%c%c%c%c%c" a b c d e f g, rest)
+
+let (|EOLPattern|_|) (input: string) =
+    match input with
+    | "\n" | "\r\n" | "\r" | "" -> Some (EOLPattern, "")
+    | _ -> None
+
+let (|Byr|_|) =
+    (|StringPattern|_|) "byr:" >>. ((|NDigits|_|) 4 <&> (|IntRangePattern|_|) 1920 2002) .>>| (|EOLPattern|_|) <!> snd
+
+let (|Iyr|_|) =
+    (|StringPattern|_|) "iyr:" >>. ((|NDigits|_|) 4 <&> (|IntRangePattern|_|) 2010 2020) .>>| (|EOLPattern|_|) <!> snd
+
+let (|Eyr|_|) =
+    (|StringPattern|_|) "eyr:" >>. ((|NDigits|_|) 4 <&> (|IntRangePattern|_|) 2020 2030) .>>| (|EOLPattern|_|) <!> snd
+
+let (|Hgt|_|) =
+    (|StringPattern|_|) "hgt:"
+    >>. (((|IntRangePattern|_|) 150 193 .>>. (|StringPattern|_|) "cm")
+         <|> ((|IntRangePattern|_|) 59 76 .>>. (|StringPattern|_|) "in"))
+    .>>| (|EOLPattern|_|)
+
+let (|Hcl|_|) = (|StringPattern|_|) "hcl:" >>. (|HexNumber|_|) .>>| (|EOLPattern|_|)
+
+let (|Ecl|_|) = (|StringPattern|_|) "ecl:" >>. (eyeColours |> List.map (|StringPattern|_|) |> List.reduce (<|>)) .>>| (|EOLPattern|_|)
+
+let (|Pid|_|) = (|StringPattern|_|) "pid:" >>. (|NDigits|_|) 9 .>>| (|EOLPattern|_|)
+
+let (|Cid|_|) =
+    (|StringPattern|_|) "cid:" <!> (fun _ -> ())
 
 let parse =
     function
-    | Byr (_, "") -> Some "byr"
-    | Eyr (_, "") -> Some "eyr"
-    | Iyr (_, "") -> Some "iyr"
-    | Hgt (_, (_, "")) -> Some "hgt"
-    | Hcl (_, "") -> Some "hcl"
-    | Ecl (_, "") -> Some "ecl"
-    | Pid (_, "") -> Some "pid"
-    | Cid -> Some "cid"
+    | StringPattern "byr:" _ -> Some "byr"
+    | StringPattern "eyr:" _ -> Some "eyr"
+    | StringPattern "iyr:" _ -> Some "iyr"
+    | StringPattern "hgt:" _ -> Some "hgt"
+    | StringPattern "hcl:" _ -> Some "hcl"
+    | StringPattern "ecl:" _ -> Some "ecl"
+    | StringPattern "pid:" _ -> Some "pid"
+    | StringPattern "cid:" _ -> Some "cid"
     | _ -> None
 
 let validate =
     function
-    | Byr (IntRangePattern 1920 2002, "") -> Some "byr"
-    | Eyr (IntRangePattern 2020 2030, "") -> Some "eyr"
-    | Iyr (IntRangePattern 2010 2020, "") -> Some "iyr"
-    | Hgt (IntRangePattern 150 190, ("cm", "")
-    | IntRangePattern 59 76, ("in", "")) -> Some "hgt"
-    | Hcl (HexNumber (_, _), "") -> Some "hcl"
-    | Ecl (c, "") when Day4.eyeColours |> List.contains c -> Some "ecl"
-    | Pid (Digits (ds, _), "") when ds.Length = 9 -> Some "pid"
+    | Byr _ -> Some "byr"
+    | Eyr _ -> Some "eyr"
+    | Iyr _ -> Some "iyr"
+    | Hgt _ -> Some "hgt"
+    | Hcl _ -> Some "hcl"
+    | Ecl _ -> Some "ecl"
+    | Pid _ -> Some "pid"
     | Cid _ -> Some "cid"
     | _ -> None
 
 let solve input validator =
     Day4.getInput input
     |> Array.map (fun s ->
-        s.Split([| ' '; '\n'; '\r' |], StringSplitOptions.RemoveEmptyEntries)
-        |> Array.choose (fun s -> s.Trim() |> validator)
-        |> Set.ofArray
-        |> Set.isSubset Day4.requiredKeys)
+        let b =
+            s.Split([| ' '; '\n'; '\r' |], StringSplitOptions.RemoveEmptyEntries)
+            |> Array.choose (fun s -> s.Trim() |> validator)
+            |> Set.ofArray
+            |> Set.isSubset Day4.requiredKeys
+        b)
     |> Array.filter id
     |> Array.length
 
 [<Solution("4AP")>]
-let SolutionA input = solve input validate
+let SolutionA input = solve input parse
 
 [<Solution("4BP")>]
-let SolutionB (input: string) = solve input validate
+let SolutionB (input: string) =
+    solve input validate

@@ -7,10 +7,6 @@ open Day4.PatternSolution2
 
 let curry f a b = f (a, b)
 
-type Bag =
-    { name: string
-      contents: (int * Bag) list }
-
 let (|Word|_|) (input: string) =
     match input |> Seq.takeWhile (not << Char.IsWhiteSpace) with
     | empty when Seq.isEmpty empty -> None
@@ -21,7 +17,7 @@ let concatName = sprintf "%s %s"
 
 let (|BagName|_|) =
     (|Word|_|) .>>. (|Word|_|)
-    <!> (fun (adj, (clr, rest)) -> concatName adj clr, rest)
+    <!> (fun ((adj, clr), rest) -> concatName adj clr, rest)
 
 let (|Bag|_|) =
     (|BagName|_|)
@@ -32,7 +28,7 @@ let (|Contents|_|) =
     .>>. ((|BagName|_|)
           .>> ((|StringPattern|_|) "bag"
                <|> (|StringPattern|_|) "bags"))
-    <!> (fun (num, (clr, _)) -> num, clr)
+    <!> (fun ((num, clr), _) -> num, clr)
 
 let parseLine line =
     match line with
