@@ -3,7 +3,7 @@
 open System
 open System.IO
 open AocReflection
-open Day4.PatternSolution2
+open PatternMatching.Patterns
 
 let curry f a b = f (a, b)
 

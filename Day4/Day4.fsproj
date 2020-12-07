@@ -14,6 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AocReflection\AocReflection.fsproj" />
+      <ProjectReference Include="..\PatternMatching\PatternMatching.fsproj" />
     </ItemGroup>
 
 </Project>

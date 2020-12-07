@@ -10,7 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AocReflection\AocReflection.fsproj" />
-      <ProjectReference Include="..\Day4\Day4.fsproj" />
+      <ProjectReference Include="..\PatternMatching\PatternMatching.fsproj" />
     </ItemGroup>
 
 </Project>
