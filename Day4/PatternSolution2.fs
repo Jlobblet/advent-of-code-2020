@@ -33,8 +33,8 @@ let (|Digits|_|) (input: string) =
 
 let (|IntPattern|_|) (input: string) =
     match input with
-    | MinusSign (_, Digits (digits, rest)) -> Some(-(int digits), rest)
-    | Digits (digits, rest) -> Some(int digits, rest)
+    | MinusSign (_, Digits (digits, rest)) -> Some(-(int digits), rest.TrimStart())
+    | Digits (digits, rest) -> Some(int digits, rest.TrimStart())
     | _ -> None
 
 let (|IntRangePattern|_|) min max (input: int) =
