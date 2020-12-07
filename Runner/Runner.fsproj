@@ -26,6 +26,9 @@
         <Content Include="Input\6">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+        <Content Include="Input\7">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -36,6 +39,7 @@
       <ProjectReference Include="..\Day4\Day4.fsproj" />
       <ProjectReference Include="..\Day5\Day5.fsproj" />
       <ProjectReference Include="..\Day6\Day6.fsproj" />
+      <ProjectReference Include="..\Day7\Day7.fsproj" />
       <ProjectReference Include="..\Extensions\Extensions.fsproj" />
     </ItemGroup>
 
