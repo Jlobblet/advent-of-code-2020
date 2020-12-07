@@ -14,8 +14,8 @@ let eyeColours =
       "grn"
       "hzl"
       "oth" ]
-    
-    
+
+
 let (|HexNumber|_|) =
     let (|HexDigit|_|) =
         (Day4.hexDigit
@@ -33,25 +33,48 @@ let (|HexNumber|_|) =
     <!> (fun (((((((g, f), e), d), c), b), a), rest) -> sprintf "%c%c%c%c%c%c%c" a b c d e f g, rest)
 
 let (|Byr|_|) =
-    (|StringPattern|_|) "byr:" >>. ((|NDigits|_|) 4 <&> (|IntRangePattern|_|) 1920 2002) .>>| (|EOLPattern|_|) <!> snd
+    (|StringPattern|_|) "byr:"
+    >>. ((|NDigits|_|) 4
+         <&> (|IntRangePattern|_|) 1920 2002)
+    .>>| (|EOLPattern|_|)
+    <!> snd
 
 let (|Iyr|_|) =
-    (|StringPattern|_|) "iyr:" >>. ((|NDigits|_|) 4 <&> (|IntRangePattern|_|) 2010 2020) .>>| (|EOLPattern|_|) <!> snd
+    (|StringPattern|_|) "iyr:"
+    >>. ((|NDigits|_|) 4
+         <&> (|IntRangePattern|_|) 2010 2020)
+    .>>| (|EOLPattern|_|)
+    <!> snd
 
 let (|Eyr|_|) =
-    (|StringPattern|_|) "eyr:" >>. ((|NDigits|_|) 4 <&> (|IntRangePattern|_|) 2020 2030) .>>| (|EOLPattern|_|) <!> snd
+    (|StringPattern|_|) "eyr:"
+    >>. ((|NDigits|_|) 4
+         <&> (|IntRangePattern|_|) 2020 2030)
+    .>>| (|EOLPattern|_|)
+    <!> snd
 
 let (|Hgt|_|) =
     (|StringPattern|_|) "hgt:"
-    >>. (((|IntRangePattern|_|) 150 193 .>>. (|StringPattern|_|) "cm")
-         <|> ((|IntRangePattern|_|) 59 76 .>>. (|StringPattern|_|) "in"))
+    >>. (((|IntRangePattern|_|) 150 193
+          .>>. (|StringPattern|_|) "cm")
+         <|> ((|IntRangePattern|_|) 59 76
+              .>>. (|StringPattern|_|) "in"))
     .>>| (|EOLPattern|_|)
 
-let (|Hcl|_|) = (|StringPattern|_|) "hcl:" >>. (|HexNumber|_|) .>>| (|EOLPattern|_|)
+let (|Hcl|_|) =
+    (|StringPattern|_|) "hcl:" >>. (|HexNumber|_|)
+    .>>| (|EOLPattern|_|)
 
-let (|Ecl|_|) = (|StringPattern|_|) "ecl:" >>. (eyeColours |> List.map (|StringPattern|_|) |> List.reduce (<|>)) .>>| (|EOLPattern|_|)
+let (|Ecl|_|) =
+    (|StringPattern|_|) "ecl:"
+    >>. (eyeColours
+         |> List.map (|StringPattern|_|)
+         |> List.reduce (<|>))
+    .>>| (|EOLPattern|_|)
 
-let (|Pid|_|) = (|StringPattern|_|) "pid:" >>. (|NDigits|_|) 9 .>>| (|EOLPattern|_|)
+let (|Pid|_|) =
+    (|StringPattern|_|) "pid:" >>. (|NDigits|_|) 9
+    .>>| (|EOLPattern|_|)
 
 let (|Cid|_|) =
     (|StringPattern|_|) "cid:" <!> (fun _ -> ())
@@ -88,6 +111,7 @@ let solve input validator =
             |> Array.choose (fun s -> s.Trim() |> validator)
             |> Set.ofArray
             |> Set.isSubset Day4.requiredKeys
+
         b)
     |> Array.filter id
     |> Array.length
@@ -96,5 +120,4 @@ let solve input validator =
 let SolutionA input = solve input parse
 
 [<Solution("4BP")>]
-let SolutionB (input: string) =
-    solve input validate
+let SolutionB (input: string) = solve input validate

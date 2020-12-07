@@ -15,7 +15,8 @@ let (.>>.) P1 P2 =
 let (.>>) P1 P2 =
     P1 .>>. P2 <!> (fun ((b, _), e) -> (b, e))
 
-let (>>.) P1 P2 = P1 .>>. P2 <!> (fun ((_, d), e) -> (d, e))
+let (>>.) P1 P2 =
+    P1 .>>. P2 <!> (fun ((_, d), e) -> (d, e))
 
 let (.>>|) P1 P2 = P1 .>> P2 <!> (fst)
 
@@ -36,7 +37,11 @@ let (<|>) (|P1|_|) (|P2|_|) x =
 let (|ExactlyNTimes|_|) N pred (input: string) =
     let hits = input |> Seq.take N
     let after = input |> Seq.skip N
-    match (hits |> Seq.forall pred) && (after |> Seq.truncate 1 |> Seq.forall (not << pred)) with
+
+    match (hits |> Seq.forall pred)
+          && (after
+              |> Seq.truncate 1
+              |> Seq.forall (not << pred)) with
     | true -> Some(input.Substring(0, N), input.Substring(N))
     | false -> None
 
@@ -56,7 +61,7 @@ let (|Digits|_|) (input: string) =
     match input.Substring(0, input |> Seq.takeWhile Char.IsNumber |> Seq.length) with
     | "" -> None
     | d -> Some(d, input.Substring(d.Length))
-    
+
 let (|NDigits|_|) N (input: string) =
     match Seq.truncate N input with
     | ds when Seq.length ds = N && Seq.forall Char.IsNumber ds -> Some(input.Substring(0, N), input.Substring(N))
@@ -70,10 +75,20 @@ let (|IntPattern|_|) (input: string) =
 
 let (|IntRangePattern|_|) min max input =
     match input with
-    | IntPattern (i, r) when i <= max && i >= min -> Some (i, r)
+    | IntPattern (i, r) when i <= max && i >= min -> Some(i, r)
     | _ -> None
 
 let (|EOLPattern|_|) (input: string) =
     match input with
-    | "\n" | "\r\n" | "\r" | "" -> Some (EOLPattern, "")
+    | "\n"
+    | "\r\n"
+    | "\r"
+    | "" -> Some(EOLPattern, "")
+    | _ -> None
+
+let (|Word|_|) (input: string) =
+    match input
+          |> Seq.takeWhile (fun c -> Char.IsLetterOrDigit c || c = '_') with
+    | empty when Seq.isEmpty empty -> None
+    | nonempty -> Some(input.Substring(0, Seq.length nonempty), input.Substring(Seq.length nonempty).TrimStart())
     | _ -> None
