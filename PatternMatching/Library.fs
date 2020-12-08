@@ -25,7 +25,7 @@ let (.>>|) P1 P2 = P1 .>> P2 <!> (fst)
 let (<&>) (P1: 'a -> ('b * 'c) option) (P2: 'a -> ('d * 'e) option) (input: 'a) =
     match P1 input with
     | None -> None
-    | Some (b, c) ->
+    | Some (b, _) ->
         match P2 input with
         | None -> None
         | Some (d, e) -> Some((b, d), e)
@@ -112,25 +112,25 @@ let (|Many1|_|) (|P1|_|) =
 
     inner
 
-let (|SepBy1|_|) Sep P1 =
-    P1 .>>. (|Many|_|) ((Sep >>. P1))
+let (|SepBy1|_|) sep P1 =
+    P1 .>>. (|Many|_|) ((sep >>. P1))
     <!> (fun ((head, tail), rest) -> head :: tail, rest)
 
-let (|SepBy|_|) Sep P1 =
+let (|SepBy|_|) sep P1 =
     function
-    | SepBy1 Sep P1 a -> Some a
+    | SepBy1 sep P1 a -> Some a
     | a -> Some([], a)
 
-let (|SplitOn|_|) (Seps: string []) (|P1|_|) (input: string) =
+let (|SplitOn|_|) (sep: string []) (|P1|_|) (input: string) =
     let a =
         input.Split
-            (Seps,
+            (sep,
              StringSplitOptions.RemoveEmptyEntries
              ||| StringSplitOptions.TrimEntries)
         |> Array.toList
 
     a
     |> List.choose (function
-        | P1 (a, b) -> Some a
+        | P1 (a, _) -> Some a
         | _ -> None)
     |> Some

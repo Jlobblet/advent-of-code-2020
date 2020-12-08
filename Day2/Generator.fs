@@ -25,7 +25,7 @@ let generate (rnd: System.Random)
             Array.init passwordLength (fun _ ->
                 match rnd.Next(0, 50) with
                 | s when s <= 25 -> letters.[s]
-                | b -> letter)
+                | _ -> letter)
             |> System.String
 
         sprintf "%i-%i %c: %s" lower upper letter password

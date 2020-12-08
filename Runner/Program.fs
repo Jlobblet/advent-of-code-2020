@@ -12,7 +12,7 @@ let solutions =
 let invoke parameters (methodInfo: MethodInfo) = methodInfo.Invoke(null, parameters)
 
 [<EntryPoint>]
-let main argv =
+let main _ =
     while true do
         let rec getInput () =
             let inp = Console.ReadLine().ToUpper()

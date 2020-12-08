@@ -1,6 +1,5 @@
 ﻿module Day4.Day4
 
-open System
 open System.IO
 open AocReflection
 open Parsers

@@ -1,6 +1,5 @@
 ﻿module Day7.Day7
 
-open System
 open System.IO
 open AocReflection
 open PatternMatching.Patterns
