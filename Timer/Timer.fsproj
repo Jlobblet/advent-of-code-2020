@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>Timer</AssemblyName>
+        <RootNamespace>Timer</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Timer.fs" />
+    </ItemGroup>
+
+</Project>

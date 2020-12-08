@@ -28,6 +28,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PatternMatchingTests", "Pat
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Day8", "Day8\Day8.fsproj", "{AB792629-F46C-4DC2-B31D-08684EDAB4FD}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Timer", "Timer\Timer.fsproj", "{C14968C8-5585-40E9-A6B4-252589F6F279}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,5 +92,9 @@ Global
 		{AB792629-F46C-4DC2-B31D-08684EDAB4FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB792629-F46C-4DC2-B31D-08684EDAB4FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB792629-F46C-4DC2-B31D-08684EDAB4FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C14968C8-5585-40E9-A6B4-252589F6F279}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C14968C8-5585-40E9-A6B4-252589F6F279}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C14968C8-5585-40E9-A6B4-252589F6F279}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C14968C8-5585-40E9-A6B4-252589F6F279}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
