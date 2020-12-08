@@ -26,6 +26,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PatternMatching", "PatternM
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PatternMatchingTests", "PatternMatchingTests\PatternMatchingTests.fsproj", "{39C4C5B8-77EC-4837-8B7C-5028DB4BEFA4}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Day8", "Day8\Day8.fsproj", "{AB792629-F46C-4DC2-B31D-08684EDAB4FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,5 +86,9 @@ Global
 		{39C4C5B8-77EC-4837-8B7C-5028DB4BEFA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39C4C5B8-77EC-4837-8B7C-5028DB4BEFA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39C4C5B8-77EC-4837-8B7C-5028DB4BEFA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB792629-F46C-4DC2-B31D-08684EDAB4FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB792629-F46C-4DC2-B31D-08684EDAB4FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB792629-F46C-4DC2-B31D-08684EDAB4FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB792629-F46C-4DC2-B31D-08684EDAB4FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

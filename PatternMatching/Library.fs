@@ -51,7 +51,8 @@ let (|StringPattern|_|) (target: string) (input: string) =
     | true -> Some(target, input.Substring(target.Length))
     | false -> None
 
-let (|MinusSign|_|) = ((|CharPattern|_|) '-') <!> snd
+let (|MinusSign|_|) = (|CharPattern|_|) '-' <!> snd
+let (|PlusSign|_|) = (|CharPattern|_|) '+' <!> snd
 
 let (|Digits|_|) (input: string) =
     match input.Substring(0, input |> Seq.takeWhile Char.IsNumber |> Seq.length) with
@@ -66,6 +67,7 @@ let (|NDigits|_|) N (input: string) =
 let (|IntPattern|_|) (input: string) =
     match input with
     | MinusSign (Digits (digits, rest)) -> Some(-(int digits), rest.TrimStart())
+    | PlusSign (Digits (digits, rest))
     | Digits (digits, rest) -> Some(int digits, rest.TrimStart())
     | _ -> None
 
