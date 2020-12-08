@@ -27,16 +27,16 @@ let (|Bag|_|) =
 
 let parseLine line =
     match line with
-    | Bag (name, contents) -> Some(name, contents)
+    | Bag (name, contents) -> Some(name, Array.ofList contents)
     | _ -> None
 
 let rec containsBag map target name =
     match Map.tryFind name map with
-    | Some bags when bags |> List.map snd |> List.contains target -> true
+    | Some bags when bags |> Array.map snd |> Array.contains target -> true
     | Some bags ->
         bags
-        |> List.map snd
-        |> List.exists (containsBag map target)
+        |> Array.map snd
+        |> Array.exists (containsBag map target)
     | None -> false
 
 let getInput location =
@@ -54,6 +54,34 @@ let SolutionA input =
     |> Map.count
     |> string
 
+[<Solution("7AS")>]
+let SolutionA2 input =
+    let map = getInput input
+    
+    let rec inner visited toVisit =       
+        if Set.isEmpty toVisit then Set.count visited
+        else
+            let newBags =
+                map
+                |> Map.filter (fun _ v ->
+                    v
+                    |> Array.map snd
+                    |> Set.ofArray
+                    |> Set.intersect toVisit
+                    |> Set.isEmpty
+                    |> not)
+                |> Map.toArray
+                |> Array.map fst
+                |> Set.ofArray
+
+            let newVisited = Set.union visited toVisit
+                
+            inner newVisited (Set.difference newBags newVisited)
+
+    // Subtract 1 to account for the shiny gold bag not being able to contain itself
+    inner Set.empty (Set.singleton "shiny gold") - 1
+                  
+
 [<Solution("7B")>]
 let SolutionB input =
     let map = getInput input
@@ -62,7 +90,7 @@ let SolutionB input =
         match map |> Map.tryFind name with
         | Some subBags ->
             subBags
-            |> List.fold (fun acc (m, n) -> acc + m * (countBags n)) 1
+            |> Array.fold (fun acc (m, n) -> acc + m * (countBags n)) 1
         | None -> 0
 
     // Subtract 1 to account for "other" bags
