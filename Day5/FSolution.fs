@@ -16,15 +16,15 @@ let replaceAll (s: string) =
 let binaryToInt s = Convert.ToInt32(s, 2)
 
 [<Solution("5AF")>]
-let SolutionAf input =
-    getInput input
+let SolutionAf (GetInput input) =
+    input
     |> Array.map (replaceAll >> binaryToInt)
     |> Array.max
     |> string
 
 [<Solution("5BF")>]
-let SolutionBf input =
-    getInput input
+let SolutionBf (GetInput input) =
+    input
     |> Array.map (replaceAll >> binaryToInt)
     |> Array.sort
     |> Array.windowed 2
