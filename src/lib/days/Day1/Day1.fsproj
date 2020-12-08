@@ -11,9 +11,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AocReflection\AocReflection.fsproj" />
-      <ProjectReference Include="..\Extensions\Extensions.fsproj" />
-      <ProjectReference Include="..\Timer\Timer.fsproj" />
+      <ProjectReference Include="..\..\AocReflection\AocReflection.fsproj" />
+      <ProjectReference Include="..\..\Timer\Timer.fsproj" />
     </ItemGroup>
 
 </Project>

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Parsers.fs" />
+        <Compile Include="Solution.fs" />
+        <Compile Include="FSolution.fs" />
+        <Compile Include="PatternSolution2.fs" />
+        <Compile Include="Generator.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\AocReflection\AocReflection.fsproj" />
+      <ProjectReference Include="..\..\PatternMatching\PatternMatching.fsproj" />
+      <ProjectReference Include="..\..\Timer\Timer.fsproj" />
+    </ItemGroup>
+
+</Project>

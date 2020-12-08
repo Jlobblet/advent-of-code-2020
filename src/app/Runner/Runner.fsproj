@@ -35,17 +35,17 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AocReflection\AocReflection.fsproj" />
-      <ProjectReference Include="..\Day1\Day1.fsproj" />
-      <ProjectReference Include="..\Day2\Day2.fsproj" />
-      <ProjectReference Include="..\Day3\Day3.fsproj" />
-      <ProjectReference Include="..\Day4\Day4.fsproj" />
-      <ProjectReference Include="..\Day5\Day5.fsproj" />
-      <ProjectReference Include="..\Day6\Day6.fsproj" />
-      <ProjectReference Include="..\Day7\Day7.fsproj" />
-      <ProjectReference Include="..\Day8\Day8.fsproj" />
-      <ProjectReference Include="..\Extensions\Extensions.fsproj" />
-      <ProjectReference Include="..\Timer\Timer.fsproj" />
+      <ProjectReference Include="..\..\lib\AocReflection\AocReflection.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day1\Day1.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day2\Day2.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day3\Day3.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day4\Day4.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day5\Day5.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day6\Day6.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day7\Day7.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day8\Day8.fsproj" />
+      <ProjectReference Include="..\..\lib\Extensions\Extensions.fsproj" />
+      <ProjectReference Include="..\..\lib\Timer\Timer.fsproj" />
     </ItemGroup>
 
 </Project>

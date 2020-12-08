@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Program.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\lib\AocReflection\AocReflection.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day1\Day1.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day2\Day2.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day3\Day3.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day4\Day4.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day5\Day5.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day6\Day6.fsproj" />
+      <ProjectReference Include="..\..\lib\Extensions\Extensions.fsproj" />
+    </ItemGroup>
+
+</Project>
