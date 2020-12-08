@@ -11,6 +11,27 @@ let solutions =
 
 let invoke parameters (methodInfo: MethodInfo) = methodInfo.Invoke(null, parameters)
 
+let consoleConcat strings =
+    let width = Console.BufferWidth / 3
+    let maxLen =
+        strings
+        |> Seq.map String.length
+        |> Seq.max
+        // Account for space around each value
+        |> (+) 1
+
+    let stringsPerLine = width / maxLen
+    let lines = (Seq.length strings) / stringsPerLine + 1
+
+    let padLeft len (s: string) = s.PadLeft len
+    let trim (s: string) = s.Trim()
+    
+    strings
+    |> Seq.toArray
+    |> Array.splitInto lines
+    |> Array.map (Array.map (padLeft maxLen) >> String.concat " " >> trim)
+    |> String.concat "\n"
+
 [<EntryPoint>]
 let main _ =
     while true do
@@ -24,7 +45,7 @@ let main _ =
         solutions
         |> Map.keys
         |> Seq.sortWith Extensions.NaturalSort.naturalCompare
-        |> String.concat "\n"
+        |> consoleConcat
         |> printf "Select solution to run:\n%s\nEnter selection: "
 
         let (solution, inp) = getInput ()
