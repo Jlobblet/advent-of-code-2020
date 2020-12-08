@@ -2,6 +2,7 @@
 
 open System.IO
 open AocReflection
+open Timer.Timer
 
 type Cell =
     | Open
@@ -22,22 +23,25 @@ let parseRow (str: string) =
 let (|GetInput|) input =
     File.ReadAllLines input |> Seq.map parseRow
 
-let Solve (GetInput input) (Right right) (Down down) =
+let Solve (timer: Timer) (GetInput input) (Right right) (Down down) =
+    timer.Lap "Parsing"
     input
     // Filter rows to keep track of vertical movement
     |> Seq.filteri (fun (i, _) -> i % down = 0)
+    |!> timer.Lap "Filter rows"
     // Filter columns to keep track of horizontal movement
     |> Seq.filteri (fun (i, row) -> (row.[right * i % Array.length row] = Tree))
+    |!> timer.Lap "Filter columns"
     |> Seq.length
     |> bigint
 
 [<Solution("3A")>]
-let SolutionA input =
-    Solve input (Right 3) (Down 1) |> string
+let SolutionA timer input =
+    Solve timer input (Right 3) (Down 1) |> string
 
 [<Solution("3B")>]
-let SolutionB input =
-    let Solve' = Solve input
+let SolutionB timer input =
+    let Solve' = Solve timer input
 
     [ Solve' (Right 1) (Down 1)
       Solve' (Right 3) (Down 1)

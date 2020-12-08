@@ -3,6 +3,7 @@
 open System.IO
 open AocReflection
 open Parsers
+open Timer.Timer
 
 let (|GetInput|) input =
     File.ReadAllLines(input)
@@ -33,7 +34,8 @@ let eyeColours =
       "oth" ]
 
 
-let solve (GetInput input) predicates =
+let solve (timer: Timer) (GetInput input) predicates =
+    timer.Lap "Reading input"
     let p =
         sepBy
             (pword .>> pchar ':'
@@ -44,20 +46,23 @@ let solve (GetInput input) predicates =
 
     input
     |> Array.choose (runNoSplit p >> resultToOption)
+    |!> timer.Lap "Parsing"
     |> Array.where (Seq.reduce (<&>) predicates)
+    |!> timer.Lap "Applying predicates"
     |> Array.length
     |> string
 
 [<Solution("4A")>]
-let SolutionA input =
+let SolutionA timer input =
     solve
+        timer
         input
         [ List.map fst
           >> Set.ofList
           >> Set.isSubset requiredKeys ]
 
 [<Solution("4B")>]
-let SolutionB input =
+let SolutionB (timer: Timer) input =
     let ppred parser =
         run' parser >> resultToOption >> Option.isSome
 
@@ -83,8 +88,11 @@ let SolutionB input =
         match Map.tryFind key predicates with
         | Some pred -> pred value
         | None -> false
+        
+    timer.Lap "Building predicates"
 
     solve
+        timer
         input
         [ List.map testKvp >> List.forall id
           List.map fst

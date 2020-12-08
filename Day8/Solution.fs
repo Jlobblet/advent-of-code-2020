@@ -4,6 +4,7 @@ open System.IO
 open AocReflection
 open PatternMatching
 open Patterns
+open Timer.Timer
 
 type Instruction =
     | Accumulator of int
@@ -40,10 +41,12 @@ let (|InstructionPattern|_|) =
     <|> (|JumpPattern|_|)
     <|> (|NoOperationPattern|_|)
 
-let (|GetInput|) =
+let (|GetInput|) (timer: Timer) =
     File.ReadAllLines
+    |!> timer.Lap "Reading input"
     >> Array.choose (|InstructionPattern|_|)
     >> defaultState
+    |!> timer.Lap "Parsing"
 
 let (|ProcessInstruction|) =
     function
@@ -95,13 +98,14 @@ let runState state =
     |> Array.sum
 
 [<Solution("8A")>]
-let SolutionA (GetInput input) =
+let SolutionA (timer: Timer) (GetInput timer input) =
     input
     |> runState
+    |!> timer.Lap "Computing accumulator"
     |> string
 
 [<Solution("8B")>]
-let SolutionB (GetInput input) =
+let SolutionB (timer: Timer) (GetInput timer input) =
     let instructionPairs =
         input.instructions
         |> Array.mapi (fun i v ->
@@ -110,12 +114,18 @@ let SolutionB (GetInput input) =
             | NoOperation _ -> i, i + 1
             | Jump j -> i, i + j)
 
+    timer.Lap "Calculating instruction pairs"
+    
     let visited =
         input |> Array.unfold runForward |> Set.ofArray
+        
+    timer.Lap "Running forwards"
 
     let visitedBackwards =
         Seq.unfold (runBackward instructionPairs) (Set.singleton (Array.length instructionPairs - 1))
         |> Seq.reduce Set.union
+        
+    timer.Lap "Running backwards"
 
     let (|Swap|_|) =
         let swap =
@@ -137,8 +147,11 @@ let SolutionB (GetInput input) =
         |> Array.mapi (function
             | Swap -> swapInstruction
             | _ -> id)
+        
+    timer.Lap "Making new instructions"
 
     { input with
           instructions = newInstructions }
     |> runState
+    |!> timer.Lap "Calculating accumulator"
     |> string

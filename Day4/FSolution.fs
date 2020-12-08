@@ -2,6 +2,7 @@ module Day4.FSolution
 
 open System
 open AocReflection
+open Timer.Timer
 
 let (|NDigits|_|) num text =
     match (text |> Seq.length = num)
@@ -80,18 +81,20 @@ let validate (text: string) =
     | [ "cid"; _ ] -> Some "cid"
     | _ -> None
 
-let solve (Day4.GetInput input) validator =
+let solve (timer: Timer) (Day4.GetInput input) validator =
+    timer.Lap "Reading input"
     input
     |> Array.map (fun s ->
         s.Split([| ' '; '\n'; '\r' |], StringSplitOptions.RemoveEmptyEntries)
         |> Array.choose validator
         |> Set.ofArray
         |> Set.isSubset Day4.requiredKeys)
+    |!> timer.Lap "Applying active patterns"
     |> Array.filter id
     |> Array.length
 
 [<Solution("4AF")>]
-let SolutionA input = solve input parse
+let SolutionA timer input = solve timer input parse
 
 [<Solution("4BF")>]
-let SolutionB input = solve input validate
+let SolutionB timer input = solve timer input validate

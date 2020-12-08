@@ -4,6 +4,8 @@ open System
 open System.Diagnostics
 open System.Reflection
 open AocReflection
+open Timer
+open Timer.Timer
 
 let solutions =
     Reflection.getMethodsWithLabeledAttribute<SolutionAttribute> ()
@@ -62,10 +64,11 @@ let main _ =
         printf "Enter filepath (blank for default): "
         let fp = getFilepath () :> obj
 
-        let sw = Stopwatch.StartNew()
-        let result = solution |> invoke [| fp |]
-        sw.Stop()
+        let t = Timer()
+        let result = solution |> invoke [| t; fp; |]
+        t.Lap "𝓕𝓲𝓷"
+        t.Stop()
+        printfn "%s" (t.Tabulate())
         printfn "%O" result
-        printfn "Execution time: %A (%ims)\n" sw.Elapsed sw.ElapsedMilliseconds
 
     0 // return an integer exit code

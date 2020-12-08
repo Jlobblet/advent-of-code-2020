@@ -3,6 +3,7 @@
 open System
 open System.IO
 open AocReflection
+open Timer.Timer
 
 let tryInt (str: string) =
     match Int32.TryParse str with
@@ -21,15 +22,19 @@ let (|GetInput|) input =
     |> Seq.choose tryInt
     |> Seq.sort
 
-let SolveN (GetInput input) N =
+let SolveN (timer: Timer) (GetInput input) N =
+    timer.Lap "Parsing"
     Seq.replicate N input
     |> cartesianProduct
+    |!> timer.Lap "Cartesian Product"
     |> Seq.find (fun arr -> arr |> Seq.reduce (+) = 2020)
+    |!> timer.Lap "Find target"
     |> List.reduce (*)
+    |!> timer.Lap "Reduction"
     |> string
 
 [<Solution("1A")>]
-let SolutionA location = SolveN location 2
+let SolutionA timer input = SolveN timer input 2
 
 [<Solution("1B")>]
-let SolutionB location = SolveN location 3
+let SolutionB timer input = SolveN timer input 3

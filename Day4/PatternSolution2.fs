@@ -3,6 +3,7 @@ module Day4.PatternSolution2
 open System
 open AocReflection
 open PatternMatching.Patterns
+open Timer.Timer
 
 let (~%%) P1 = Option.bind P1
 
@@ -92,7 +93,8 @@ let validate =
     | Cid _ -> Some "cid"
     | _ -> None
 
-let solve (Day4.GetInput input) validator =
+let solve (timer: Timer) (Day4.GetInput input) validator =
+    timer.Lap "Reading input"
     input
     |> Array.map (fun s ->
         let b =
@@ -102,11 +104,12 @@ let solve (Day4.GetInput input) validator =
             |> Set.isSubset Day4.requiredKeys
 
         b)
+    |!> timer.Lap "Applying patterns"
     |> Array.filter id
     |> Array.length
 
 [<Solution("4AP")>]
-let SolutionA input = solve input parse
+let SolutionA timer input = solve timer input parse
 
 [<Solution("4BP")>]
-let SolutionB (input: string) = solve input validate
+let SolutionB timer input = solve timer input validate

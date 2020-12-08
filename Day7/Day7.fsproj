@@ -11,6 +11,7 @@
     <ItemGroup>
       <ProjectReference Include="..\AocReflection\AocReflection.fsproj" />
       <ProjectReference Include="..\PatternMatching\PatternMatching.fsproj" />
+      <ProjectReference Include="..\Timer\Timer.fsproj" />
     </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@
 
 open System.IO
 open AocReflection
+open Timer.Timer
 
 let (|GetInput|) location =
     // normalise EOL character
@@ -10,17 +11,20 @@ let (|GetInput|) location =
     |> (fun s -> s.Split("\n\n"))
 
 [<Solution("6A")>]
-let SolutionA (GetInput input) =
+let SolutionA (timer: Timer) (GetInput input) =
+    timer.Lap "Reading input"
     input
     |> Array.map
         ((fun s -> s.Replace("\n", "").ToCharArray())
          >> Set.ofArray
          >> Set.count)
+    |!> "Creating sets"
     |> Array.sum
     |> string
 
 [<Solution("6B")>]
-let SolutionB (GetInput input) =
+let SolutionB (timer: Timer) (GetInput input) =
+    timer.Lap "Reading input"
     input
     |> Array.map
         ((fun s ->
@@ -28,5 +32,6 @@ let SolutionB (GetInput input) =
             |> Array.map (fun s' -> s'.ToCharArray() |> Set.ofArray)
             |> Array.reduce Set.intersect)
          >> Set.count)
+    |!> timer.Lap "Creating and intersecting sets"
     |> Array.sum
     |> string

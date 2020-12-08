@@ -3,6 +3,7 @@
 open System.IO
 open AocReflection
 open PatternMatching.Patterns
+open Timer.Timer
 
 let curry f a b = f (a, b)
 
@@ -38,24 +39,28 @@ let rec containsBag map target name =
         |> Array.exists (containsBag map target)
     | None -> false
 
-let (|GetInput|) location =
+let (|GetInput|) (timer: Timer) location =
     File.ReadAllLines(location)
+    |!> timer.Lap "Reading input"
     |> Array.choose parseLine
     |> Map.ofArray
+    |!> timer.Lap "Parsing"
 
 [<Solution("7A")>]
-let SolutionA (GetInput input) =
+let SolutionA (timer: Timer) (GetInput timer input) =
     let map = input
 
     map
     |> Map.map (fun k _ -> containsBag map "shiny gold" k)
     |> Map.filter (curry snd)
+    |!> timer.Lap "Finding bags that contain shiny a gold bag"
     |> Map.count
     |> string
 
 [<Solution("7AS")>]
-let SolutionA2 (GetInput input) =    
-    let rec inner visited toVisit =       
+let SolutionA2 (timer: Timer) (GetInput timer input) =
+    timer.Lap "Reading input"
+    let rec inner visited toVisit =
         if Set.isEmpty toVisit then Set.count visited
         else
             let newBags =
@@ -77,10 +82,12 @@ let SolutionA2 (GetInput input) =
 
     // Subtract 1 to account for the shiny gold bag not being able to contain itself
     inner Set.empty (Set.singleton "shiny gold") - 1
+    |!> timer.Lap "Finding bags that contain shiny a gold bag"
+    |> string
                   
 
 [<Solution("7B")>]
-let SolutionB (GetInput input) =
+let SolutionB (timer: Timer) (GetInput timer input) =
     let rec countBags name =
         match input |> Map.tryFind name with
         | Some subBags ->
@@ -90,3 +97,4 @@ let SolutionB (GetInput input) =
 
     // Subtract 1 to account for "other" bags
     countBags "shiny gold" - 1 |> string
+    |!> timer.Lap "Counting contained bags"

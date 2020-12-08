@@ -4,6 +4,7 @@ open System.IO
 open AocReflection
 open Day4
 open Parsers
+open Timer.Timer
 
 let combine a b = 2 * a + b
 
@@ -38,19 +39,24 @@ let pSeatId =
 let (|GetInput|) input = File.ReadAllLines(input)
 
 [<Solution("5A")>]
-let SolutionA (GetInput input) =
+let SolutionA (timer: Timer) (GetInput input) =
+    timer.Lap "Reading input"
     input
     |> Array.choose (run' pSeatId >> resultToOption)
+    |!> timer.Lap "Parsing"
     |> Array.max
     |> string
 
 [<Solution("5B")>]
-let SolutionB (GetInput input) =
+let SolutionB (timer: Timer) (GetInput input) =
+    timer.Lap "Reading input"
     input
     |> Array.choose (run' pSeatId >> resultToOption)
+    |!> timer.Lap "Parsing"
     |> Array.sort
     |> Array.windowed 2
     |> Array.find (fun window -> Array.max window - Array.min window > 1)
     |> Array.head
     |> (+) 1
+    |!> timer.Lap "Finding seat"
     |> sprintf "%A"

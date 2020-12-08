@@ -3,6 +3,7 @@
 open System.IO
 open System.Text.RegularExpressions
 open AocReflection
+open Timer.Timer
 
 let PasswordRegex =
     Regex @"^(?<lower>\d+)-(?<upper>\d+) (?<char>\w): (?<password>\w+)$"
@@ -40,16 +41,19 @@ let validatePasswordB spec =
     (pw.[spec.lower - 1] = spec.char)
     <> (pw.[spec.upper - 1] = spec.char)
 
-let Solution (GetInput input) validator =
+let Solution (timer: Timer) (GetInput input) validator =
+    timer.Lap "Parsing"
     input
     |> Seq.map validator
+    |!> timer.Lap "Map validator"
     |> Seq.filter id
     |> Seq.length
+    |!> timer.Lap "Filter & length"
     |> string
 
 
 [<Solution("2A")>]
-let SolutionA location = Solution location validatePasswordA
+let SolutionA timer input = Solution timer input validatePasswordA
 
 [<Solution("2B")>]
-let SolutionB location = Solution location validatePasswordB
+let SolutionB timer input = Solution timer input validatePasswordB

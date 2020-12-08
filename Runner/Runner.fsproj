@@ -45,6 +45,7 @@
       <ProjectReference Include="..\Day7\Day7.fsproj" />
       <ProjectReference Include="..\Day8\Day8.fsproj" />
       <ProjectReference Include="..\Extensions\Extensions.fsproj" />
+      <ProjectReference Include="..\Timer\Timer.fsproj" />
     </ItemGroup>
 
 </Project>
