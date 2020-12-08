@@ -39,14 +39,14 @@ let rec containsBag map target name =
         |> Array.exists (containsBag map target)
     | None -> false
 
-let getInput location =
+let (|GetInput|) location =
     File.ReadAllLines(location)
     |> Array.choose parseLine
     |> Map.ofArray
 
 [<Solution("7A")>]
-let SolutionA input =
-    let map = getInput input
+let SolutionA (GetInput input) =
+    let map = input
 
     map
     |> Map.map (fun k _ -> containsBag map "shiny gold" k)
@@ -55,14 +55,12 @@ let SolutionA input =
     |> string
 
 [<Solution("7AS")>]
-let SolutionA2 input =
-    let map = getInput input
-    
+let SolutionA2 (GetInput input) =    
     let rec inner visited toVisit =       
         if Set.isEmpty toVisit then Set.count visited
         else
             let newBags =
-                map
+                input
                 |> Map.filter (fun _ v ->
                     v
                     |> Array.map snd
@@ -83,11 +81,9 @@ let SolutionA2 input =
                   
 
 [<Solution("7B")>]
-let SolutionB input =
-    let map = getInput input
-
+let SolutionB (GetInput input) =
     let rec countBags name =
-        match map |> Map.tryFind name with
+        match input |> Map.tryFind name with
         | Some subBags ->
             subBags
             |> Array.fold (fun acc (m, n) -> acc + m * (countBags n)) 1

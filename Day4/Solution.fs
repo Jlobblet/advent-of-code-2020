@@ -5,8 +5,8 @@ open System.IO
 open AocReflection
 open Parsers
 
-let getInput location =
-    File.ReadAllLines(location)
+let (|GetInput|) input =
+    File.ReadAllLines(input)
     |> String.concat "\n"
     |> (fun s -> s.Split("\n\n"))
 
@@ -34,7 +34,7 @@ let eyeColours =
       "oth" ]
 
 
-let solve location predicates =
+let solve (GetInput input) predicates =
     let p =
         sepBy
             (pword .>> pchar ':'
@@ -43,22 +43,22 @@ let solve location predicates =
 
     let (<&>) f g = (fun x -> f x && g x)
 
-    getInput location
+    input
     |> Array.choose (runNoSplit p >> resultToOption)
     |> Array.where (Seq.reduce (<&>) predicates)
     |> Array.length
     |> string
 
 [<Solution("4A")>]
-let SolutionA location =
+let SolutionA input =
     solve
-        location
+        input
         [ List.map fst
           >> Set.ofList
           >> Set.isSubset requiredKeys ]
 
 [<Solution("4B")>]
-let SolutionB location =
+let SolutionB input =
     let ppred parser =
         run' parser >> resultToOption >> Option.isSome
 
@@ -86,7 +86,7 @@ let SolutionB location =
         | None -> false
 
     solve
-        location
+        input
         [ List.map testKvp >> List.forall id
           List.map fst
           >> Set.ofList

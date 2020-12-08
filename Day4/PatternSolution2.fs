@@ -92,8 +92,8 @@ let validate =
     | Cid _ -> Some "cid"
     | _ -> None
 
-let solve input validator =
-    Day4.getInput input
+let solve (Day4.GetInput input) validator =
+    input
     |> Array.map (fun s ->
         let b =
             s.Split([| ' '; '\n'; '\r' |], StringSplitOptions.RemoveEmptyEntries)

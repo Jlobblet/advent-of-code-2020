@@ -80,8 +80,8 @@ let validate (text: string) =
     | [ "cid"; _ ] -> Some "cid"
     | _ -> None
 
-let solve input validator =
-    Day4.getInput input
+let solve (Day4.GetInput input) validator =
+    input
     |> Array.map (fun s ->
         s.Split([| ' '; '\n'; '\r' |], StringSplitOptions.RemoveEmptyEntries)
         |> Array.choose validator

@@ -19,11 +19,11 @@ let createCell char =
 let parseRow (str: string) =
     str.ToCharArray() |> Array.map createCell
 
-let getInput location =
-    File.ReadAllLines location |> Seq.map parseRow
+let (|GetInput|) input =
+    File.ReadAllLines input |> Seq.map parseRow
 
-let Solve location (Right right) (Down down) =
-    getInput location
+let Solve (GetInput input) (Right right) (Down down) =
+    input
     // Filter rows to keep track of vertical movement
     |> Seq.filteri (fun (i, _) -> i % down = 0)
     // Filter columns to keep track of horizontal movement
@@ -32,12 +32,12 @@ let Solve location (Right right) (Down down) =
     |> bigint
 
 [<Solution("3A")>]
-let SolutionA location =
-    Solve location (Right 3) (Down 1) |> string
+let SolutionA input =
+    Solve input (Right 3) (Down 1) |> string
 
 [<Solution("3B")>]
-let SolutionB location =
-    let Solve' = Solve location
+let SolutionB input =
+    let Solve' = Solve input
 
     [ Solve' (Right 1) (Down 1)
       Solve' (Right 3) (Down 1)

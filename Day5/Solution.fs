@@ -35,18 +35,18 @@ let pCol = exactlyN 3 combine pLR
 let pSeatId =
     (uncurry (+)) <!> (pRow .>>. pCol .>> pEOL)
 
-let getInput input = File.ReadAllLines(input)
+let (|GetInput|) input = File.ReadAllLines(input)
 
 [<Solution("5A")>]
-let SolutionA input =
-    getInput input
+let SolutionA (GetInput input) =
+    input
     |> Array.choose (run' pSeatId >> resultToOption)
     |> Array.max
     |> string
 
 [<Solution("5B")>]
-let SolutionB input =
-    getInput input
+let SolutionB (GetInput input) =
+    input
     |> Array.choose (run' pSeatId >> resultToOption)
     |> Array.sort
     |> Array.windowed 2

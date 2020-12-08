@@ -3,15 +3,15 @@
 open System.IO
 open AocReflection
 
-let getInput location =
+let (|GetInput|) location =
     // normalise EOL character
     File.ReadAllLines(location)
     |> String.concat "\n"
     |> (fun s -> s.Split("\n\n"))
 
 [<Solution("6A")>]
-let SolutionA input =
-    getInput input
+let SolutionA (GetInput input) =
+    input
     |> Array.map
         ((fun s -> s.Replace("\n", "").ToCharArray())
          >> Set.ofArray
@@ -20,8 +20,8 @@ let SolutionA input =
     |> string
 
 [<Solution("6B")>]
-let SolutionB input =
-    getInput input
+let SolutionB (GetInput input) =
+    input
     |> Array.map
         ((fun s ->
             s.Split("\n")

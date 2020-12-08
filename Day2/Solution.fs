@@ -21,8 +21,8 @@ let createPasswordSpec =
           char = char m.Groups.["char"].Value
           password = m.Groups.["password"].Value }
 
-let readInput location =
-    File.ReadLines location
+let (|GetInput|) input =
+    File.ReadLines input
     |> Seq.map createPasswordSpec
 
 let validatePasswordA spec =
@@ -40,8 +40,8 @@ let validatePasswordB spec =
     (pw.[spec.lower - 1] = spec.char)
     <> (pw.[spec.upper - 1] = spec.char)
 
-let Solution location validator =
-    readInput location
+let Solution (GetInput input) validator =
+    input
     |> Seq.map validator
     |> Seq.filter id
     |> Seq.length

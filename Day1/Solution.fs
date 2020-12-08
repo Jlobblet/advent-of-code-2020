@@ -16,15 +16,13 @@ let cartesianProduct seqs =
                 for y in acc -> x :: y
         }) seqs (Seq.singleton [])
 
-let readInput location =
-    File.ReadLines location
+let (|GetInput|) input =
+    File.ReadLines input
     |> Seq.choose tryInt
     |> Seq.sort
 
-let SolveN location N =
-    let numbers = readInput location
-
-    Seq.replicate N numbers
+let SolveN (GetInput input) N =
+    Seq.replicate N input
     |> cartesianProduct
     |> Seq.find (fun arr -> arr |> Seq.reduce (+) = 2020)
     |> List.reduce (*)
