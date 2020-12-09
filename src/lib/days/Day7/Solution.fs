@@ -25,8 +25,7 @@ let (|Bag|_|) =
     .>>. (|SepBy|_|) ((|StringPattern|_|) ", ") (|Contents|_|)
     <!> fst
 
-let parseLine line =
-    match line with
+let parseLine = function
     | Bag (name, contents) -> Some(name, Array.ofList contents)
     | _ -> None
 
