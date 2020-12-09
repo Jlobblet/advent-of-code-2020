@@ -20,10 +20,12 @@ type Timer() =
 
     member this.Tabulate() =
         let headers = [ "Label"; "Time"; "Time (ms)" ]
+        
+        let timeFormat = @"mm\:ss\.fffffff"
 
         let columns =
             [ laps |> List.map fst
-              laps |> List.map (snd >> string)
+              laps |> List.map (fun (_, t) -> t.ToString(timeFormat))
               laps
               |> List.map (fun (_, time) -> time.TotalMilliseconds |> int |> sprintf "%ims") ]
 
@@ -50,7 +52,7 @@ type Timer() =
 
         let footers =
             [ "Total"
-              laps |> List.map snd |> List.reduce (+) |> string
+              laps |> List.map snd |> List.reduce (+) |> (fun t -> t.ToString(timeFormat))
               laps
               |> List.map snd
               |> List.reduce (+)
