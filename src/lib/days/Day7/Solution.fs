@@ -58,7 +58,6 @@ let SolutionA (timer: Timer) (GetInput timer input) =
 
 [<Solution("7AS")>]
 let SolutionA2 (timer: Timer) (GetInput timer input) =
-    timer.Lap "Reading input"
     let rec inner visited toVisit =
         if Set.isEmpty toVisit then Set.count visited
         else
