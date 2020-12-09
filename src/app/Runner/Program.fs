@@ -1,7 +1,6 @@
 ﻿// Learn more about F# at http://docs.microsoft.com/dotnet/fsharp
 
 open System
-open System.Diagnostics
 open System.Reflection
 open AocReflection
 open Timer
@@ -66,9 +65,9 @@ let main _ =
 
         let t = Timer()
         let result = solution |> invoke [| t; fp; |]
-        t.Lap "𝓕𝓲𝓷"
+        t.Lap "\U0001d4d5\U0001d4f2\U0001d4f7"
         t.Stop()
         printfn "%s" (t.Tabulate())
-        printfn "%O" result
+        printfn "Result: %O" result
 
     0 // return an integer exit code
