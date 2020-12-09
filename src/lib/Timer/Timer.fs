@@ -54,7 +54,7 @@ type Timer() =
               laps
               |> List.map snd
               |> List.reduce (+)
-              |> (fun t -> sprintf "%ims" t.Milliseconds) ]
+              |> (fun t -> sprintf "%ims" (t.TotalMilliseconds |> int)) ]
 
         let paddedFooters =
             List.map2 (fun f p -> f |> pad p) footers widths
@@ -81,4 +81,3 @@ type Timer() =
         lines |> String.concat "\n"
 
 let inline (|!>) x _ = x
-let inline (>!>) f _ = f
