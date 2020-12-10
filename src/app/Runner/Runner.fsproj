@@ -35,9 +35,13 @@
         <Content Include="Input\9">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+        <Content Include="Input\10">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Day10\Day10.fsproj" />
       <ProjectReference Include="..\..\lib\AocReflection\AocReflection.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day1\Day1.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day2\Day2.fsproj" />

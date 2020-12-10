@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Solution.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\src\lib\AocReflection\AocReflection.fsproj" />
+      <ProjectReference Include="..\src\lib\Timer\Timer.fsproj" />
+    </ItemGroup>
+
+</Project>
