@@ -1,20 +1,18 @@
 ﻿module Day9.Day9
 
-open System
 open System.IO
+open System.Numerics
 open AocReflection
 open Timer.Timer
 
-let uncurry f (a, b) = f a b
-
-let tryInt (i: string) =
-    match Int32.TryParse i with
+let tryBigInt (i: string) =
+    match BigInteger.TryParse i with
     | true, i -> Some i
     | _ -> None
 
-let (|GetInput|) = File.ReadAllLines >> Array.choose tryInt
+let (|GetInput|) = File.ReadAllLines >> Array.choose tryBigInt
 
-let isSum (arr: int []) =
+let isSum (arr: bigint[]) =
     let target = arr |> Array.last
 
     let numbers =
