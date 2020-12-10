@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\lib\AocReflection\AocReflection.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day10\Day10.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day1\Day1.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day2\Day2.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day3\Day3.fsproj" />
