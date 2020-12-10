@@ -88,7 +88,6 @@ let combinations list =
             | _ -> inner ((a + b :: l) :: (b :: l) :: q) sum
         
     inner [list] 0I
-        
 
 [<Solution("10B")>]
 let SolutionB (timer: Timer) (GetInput input) =

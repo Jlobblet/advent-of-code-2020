@@ -9,8 +9,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\lib\AocReflection\AocReflection.fsproj" />
-      <ProjectReference Include="..\src\lib\Timer\Timer.fsproj" />
+      <ProjectReference Include="..\..\AocReflection\AocReflection.fsproj" />
+      <ProjectReference Include="..\..\Timer\Timer.fsproj" />
     </ItemGroup>
 
 </Project>
