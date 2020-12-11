@@ -44,7 +44,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\lib\days\Day11\Day11.fsproj" />
       <ProjectReference Include="..\..\lib\AocReflection\AocReflection.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day1\Day1.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day2\Day2.fsproj" />
@@ -56,6 +55,7 @@
       <ProjectReference Include="..\..\lib\days\Day8\Day8.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day9\Day9.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day10\Day10.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day11\Day11.fsproj" />
       <ProjectReference Include="..\..\lib\Extensions\Extensions.fsproj" />
       <ProjectReference Include="..\..\lib\Timer\Timer.fsproj" />
     </ItemGroup>
