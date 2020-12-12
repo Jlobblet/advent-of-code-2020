@@ -12,6 +12,8 @@ type Position =
     { x: int
       y: int }
     static member (+)(a, b) = { x = a.x + b.x; y = a.y + b.y }
+    static member (*)(a, b) = { x = a * b.x; y = a * b.y }
+    static member (*)(a, b) = { x = b * a.x; y = b * a.y }
 
 type Distance = Distance of int
 
@@ -21,39 +23,83 @@ type Direction =
     | South = 90
     | West = 180
 
+type IState<'State> =
+    abstract move: Distance -> 'State
+    abstract rotate: int -> 'State
+    abstract translate: Position -> 'State
+
 type State =
     { position: Position
       direction: Direction }
-    static member move (Distance distance) state =
-        let newPosition =
-            match state.direction with
-            | Direction.North ->
-                { state.position with
-                      y = state.position.y + distance }
-            | Direction.East ->
-                { state.position with
-                      x = state.position.x + distance }
-            | Direction.South ->
-                { state.position with
-                      y = state.position.y - distance }
-            | Direction.West ->
-                { state.position with
-                      x = state.position.x - distance }
-            | _ -> failwith "We're lost!"
+    interface IState<State> with
+        member this.move(Distance distance) =
+            let newPosition =
+                match this.direction with
+                | Direction.North ->
+                    { this.position with
+                          y = this.position.y + distance }
+                | Direction.East ->
+                    { this.position with
+                          x = this.position.x + distance }
+                | Direction.South ->
+                    { this.position with
+                          y = this.position.y - distance }
+                | Direction.West ->
+                    { this.position with
+                          x = this.position.x - distance }
+                | _ -> failwith "We're lost!"
 
-        { state with position = newPosition }
+            { this with position = newPosition }
 
-    static member rotate angle state =
-        { state with
-              direction = enum<Direction> ((int state.direction + angle) %% 360) }
+        member this.rotate angle =
+            { this with
+                  direction = enum<Direction> ((int this.direction - angle) %% 360) }
 
-    static member translate positionVector state =
-        { state with
-              position = state.position + positionVector }
+        member this.translate positionVector =
+            { this with
+                  position = this.position + positionVector }
 
     static member initialState() =
         { position = { x = 0; y = 0 }
           direction = Direction.East }
+
+type WaypointState =
+    { shipPosition: Position
+      waypointPosition: Position }
+    interface IState<WaypointState> with
+        member this.move(Distance distance) =
+            { this with
+                  shipPosition =
+                      this.shipPosition
+                      + distance * this.waypointPosition }
+
+        member this.rotate angle =
+            let newWaypointPosition =
+                match angle with
+                | 0 ->
+                    { x = this.waypointPosition.x
+                      y = this.waypointPosition.y }
+                | 90 ->
+                    { x = -this.waypointPosition.y
+                      y = this.waypointPosition.x }
+                | 180 ->
+                    { x = -this.waypointPosition.x
+                      y = -this.waypointPosition.y }
+                | 270 ->
+                    { x = this.waypointPosition.y
+                      y = -this.waypointPosition.x }
+                | _ -> failwith "We're lost!"
+
+            { this with
+                  waypointPosition = newWaypointPosition }
+
+        member this.translate positionVector =
+            { this with
+                  waypointPosition = this.waypointPosition + positionVector }
+
+    static member initialState() =
+        { shipPosition = { x = 0; y = 0 }
+          waypointPosition = { x = 10; y = 1 } }
 
 type Instruction<'a> =
     | Move of Distance * (unit -> 'a)
@@ -87,19 +133,19 @@ let move distance = Continue(Move(distance, Stop))
 let turn angle = Continue(Turn(angle, Stop))
 let translate vector = Continue(Translate(vector, Stop))
 
-let rec interpret state program =
+let rec interpret (state: IState<_>) program =
     match program with
     | Stop _ -> state
     | Continue (Move (distance, next)) ->
-        let newState = State.move distance state
+        let newState = state.move distance
         let nextProgram = next ()
         interpret newState nextProgram
     | Continue (Turn (angle, next)) ->
-        let newState = State.rotate (int angle) state
+        let newState = state.rotate (int angle)
         let nextProgram = next ()
         interpret newState nextProgram
     | Continue (Translate (vector, next)) ->
-        let newState = State.translate vector state
+        let newState = state.translate vector
         let nextProgram = next ()
         interpret newState nextProgram
 
@@ -123,8 +169,8 @@ let matchLine line =
     | EastPattern v -> turtle { do! translate { x = v; y = 0 } }
     | SouthPattern v -> turtle { do! translate { x = 0; y = -v } }
     | WestPattern v -> turtle { do! translate { x = -v; y = 0 } }
-    | LeftPattern v -> turtle { do! turn (enum<Direction> (-v %% 360)) }
-    | RightPattern v -> turtle { do! turn (enum<Direction> (v %% 360)) }
+    | LeftPattern v -> turtle { do! turn (enum<Direction> (v %% 360)) }
+    | RightPattern v -> turtle { do! turn (enum<Direction> (-v %% 360)) }
     | ForwardPattern v -> turtle { do! move (Distance v) }
     | _ -> failwith "Where are we going?"
 
@@ -143,7 +189,32 @@ let SolutionA (timer: Timer) (ReadInput input) =
         |!> timer.Lap "Folding programs into one"
 
     let ending =
-        interpret (State.initialState ()) program
+        interpret (State.initialState ()) program :?> State
 
     timer.Lap "Running program"
-    abs ending.position.x + abs ending.position.y |> string
+
+    abs ending.position.x + abs ending.position.y
+    |> string
+
+[<Solution("12B")>]
+let SolutionB (timer: Timer) (ReadInput input) =
+    timer.Lap "Reading input"
+
+    let program =
+        input |> Array.map matchLine
+        |!> timer.Lap "Matching patterns"
+        |> Array.fold (fun acc elt ->
+            turtle {
+                do! acc
+                do! elt
+            }) (turtle { do! stop })
+        |!> timer.Lap "Folding programs into one"
+
+    let ending =
+        interpret (WaypointState.initialState ()) program :?> WaypointState
+
+    timer.Lap "Running program"
+
+    abs ending.shipPosition.x
+    + abs ending.shipPosition.y
+    |> string
