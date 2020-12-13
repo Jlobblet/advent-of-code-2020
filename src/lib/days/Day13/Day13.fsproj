@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Solution.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\AocReflection\AocReflection.fsproj" />
+      <ProjectReference Include="..\..\PatternMatching\PatternMatching.fsproj" />
+      <ProjectReference Include="..\..\Timer\Timer.fsproj" />
+    </ItemGroup>
+
+</Project>
