@@ -174,9 +174,7 @@ let matchLine line =
     | ForwardPattern v -> turtle { do! move (Distance v) }
     | _ -> failwith "Where are we going?"
 
-let inline solve< ^State when ^State: (static member initialState: unit -> ^State) and ^State :> IState< ^State >> (timer: Timer)
-                                                                                                                   (ReadInput input)
-                                                                                                                   =
+let solve (timer: Timer) (ReadInput input) (initialState: unit -> 'State) =
     timer.Lap "Reading input"
 
     let program =
@@ -189,12 +187,12 @@ let inline solve< ^State when ^State: (static member initialState: unit -> ^Stat
             })
         |!> timer.Lap "Folding programs into one"
 
-    interpret (^State: (static member initialState: unit -> ^State) ()) program :?> ^State
+    interpret (initialState ()) program :?> 'State
     |!> timer.Lap "Running program"
 
 [<Solution("12A")>]
 let SolutionA timer input =
-    let ending = solve<State> timer input
+    let ending = solve timer input State.initialState
 
     abs ending.position.x + abs ending.position.y
     |> string
@@ -202,7 +200,7 @@ let SolutionA timer input =
 [<Solution("12B")>]
 let SolutionB timer input =
     let ending =
-        solve<WaypointState> timer input
+        solve timer input WaypointState.initialState
 
     abs ending.shipPosition.x
     + abs ending.shipPosition.y
