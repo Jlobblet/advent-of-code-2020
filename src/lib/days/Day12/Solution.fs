@@ -189,12 +189,12 @@ let inline solve< ^State when ^State: (static member initialState: unit -> ^Stat
             })
         |!> timer.Lap "Folding programs into one"
 
-    interpret (^State: (static member initialState: unit -> ^State) ()) program
+    interpret (^State: (static member initialState: unit -> ^State) ()) program :?> ^State
     |!> timer.Lap "Running program"
 
 [<Solution("12A")>]
 let SolutionA timer input =
-    let ending = solve<State> timer input :?> State
+    let ending = solve<State> timer input
 
     abs ending.position.x + abs ending.position.y
     |> string
@@ -202,7 +202,7 @@ let SolutionA timer input =
 [<Solution("12B")>]
 let SolutionB timer input =
     let ending =
-        solve<WaypointState> timer input :?> WaypointState
+        solve<WaypointState> timer input
 
     abs ending.shipPosition.x
     + abs ending.shipPosition.y
