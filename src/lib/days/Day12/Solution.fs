@@ -174,46 +174,36 @@ let matchLine line =
     | ForwardPattern v -> turtle { do! move (Distance v) }
     | _ -> failwith "Where are we going?"
 
-[<Solution("12A")>]
-let SolutionA (timer: Timer) (ReadInput input) =
+let inline solve< ^State when ^State: (static member initialState: unit -> ^State) and ^State :> IState< ^State >> (timer: Timer)
+                                                                                                                   (ReadInput input)
+                                                                                                                   =
     timer.Lap "Reading input"
 
     let program =
         input |> Array.map matchLine
         |!> timer.Lap "Matching patterns"
-        |> Array.fold (fun acc elt ->
+        |> Array.reduce (fun acc elt ->
             turtle {
                 do! acc
                 do! elt
-            }) (turtle { do! stop })
+            })
         |!> timer.Lap "Folding programs into one"
 
-    let ending =
-        interpret (State.initialState ()) program :?> State
+    match (^State: (static member initialState: unit -> ^State) ()) with
+    | s -> interpret s program
+    |!> timer.Lap "Running program"
 
-    timer.Lap "Running program"
+[<Solution("12A")>]
+let SolutionA timer input =
+    let ending = solve<State> timer input :?> State
 
     abs ending.position.x + abs ending.position.y
     |> string
 
 [<Solution("12B")>]
-let SolutionB (timer: Timer) (ReadInput input) =
-    timer.Lap "Reading input"
-
-    let program =
-        input |> Array.map matchLine
-        |!> timer.Lap "Matching patterns"
-        |> Array.fold (fun acc elt ->
-            turtle {
-                do! acc
-                do! elt
-            }) (turtle { do! stop })
-        |!> timer.Lap "Folding programs into one"
-
+let SolutionB timer input =
     let ending =
-        interpret (WaypointState.initialState ()) program :?> WaypointState
-
-    timer.Lap "Running program"
+        solve<WaypointState> timer input :?> WaypointState
 
     abs ending.shipPosition.x
     + abs ending.shipPosition.y
