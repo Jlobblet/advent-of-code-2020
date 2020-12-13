@@ -189,8 +189,7 @@ let inline solve< ^State when ^State: (static member initialState: unit -> ^Stat
             })
         |!> timer.Lap "Folding programs into one"
 
-    match (^State: (static member initialState: unit -> ^State) ()) with
-    | s -> interpret s program
+    interpret (^State: (static member initialState: unit -> ^State) ()) program
     |!> timer.Lap "Running program"
 
 [<Solution("12A")>]
