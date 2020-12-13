@@ -74,7 +74,6 @@ let SolutionB (timer: Timer) (GetInput (_, busses)) =
             bigint busId,
             - bigint offset))
     |!> timer.Lap "Adding modulo targets"
-    |> List.take 2
     |> List.reduce crt
     |!> timer.Lap "Reduce on CRT"
     |> (fun (a, b) -> b %% a)
