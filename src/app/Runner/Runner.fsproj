@@ -44,11 +44,19 @@
         <Content Include="Input\12">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+        <Content Include="Input\13">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Input\14">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\lib\AocReflection\AocReflection.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day12\Day12.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day13\Day13.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day14\Day14.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day1\Day1.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day2\Day2.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day3\Day3.fsproj" />
