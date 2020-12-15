@@ -17,7 +17,7 @@ let unfolder (map, lastNumber, currentIndex) =
         Map.tryFind lastNumber map
         |> Option.fold (fun _ i -> lastIndex - i) 0
 
-    Some(nextNumber, (Map.add lastNumber (currentIndex - 1) map, nextNumber, currentIndex + 1))
+    Some(nextNumber, (Map.add lastNumber lastIndex map, nextNumber, currentIndex + 1))
 
 let nthElement (timer: Timer) (GetInput input) (N: int) =
     timer.Lap "Parsing"
