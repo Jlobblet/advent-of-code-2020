@@ -23,8 +23,7 @@ let createPasswordSpec =
           password = m.Groups.["password"].Value }
 
 let (|GetInput|) input =
-    File.ReadLines input
-    |> Seq.map createPasswordSpec
+    File.ReadLines input |> Seq.map createPasswordSpec
 
 let validatePasswordA spec =
     let count =
@@ -43,8 +42,8 @@ let validatePasswordB spec =
 
 let Solution (timer: Timer) (GetInput input) validator =
     timer.Lap "Parsing"
-    input
-    |> Seq.map validator
+
+    input |> Seq.map validator
     |!> timer.Lap "Map validator"
     |> Seq.filter id
     |> Seq.length

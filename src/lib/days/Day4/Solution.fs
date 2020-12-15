@@ -36,6 +36,7 @@ let eyeColours =
 
 let solve (timer: Timer) (GetInput input) predicates =
     timer.Lap "Reading input"
+
     let p =
         sepBy
             (pword .>> pchar ':'
@@ -88,7 +89,7 @@ let SolutionB (timer: Timer) input =
         match Map.tryFind key predicates with
         | Some pred -> pred value
         | None -> false
-        
+
     timer.Lap "Building predicates"
 
     solve

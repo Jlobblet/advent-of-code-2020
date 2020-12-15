@@ -10,9 +10,10 @@ let tryBigInt (i: string) =
     | true, i -> Some i
     | _ -> None
 
-let (|GetInput|) = File.ReadAllLines >> Array.choose tryBigInt
+let (|GetInput|) =
+    File.ReadAllLines >> Array.choose tryBigInt
 
-let isSum (arr: bigint[]) =
+let isSum (arr: bigint []) =
     let target = arr |> Array.last
 
     let numbers =

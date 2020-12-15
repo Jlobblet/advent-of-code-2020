@@ -95,6 +95,7 @@ let validate =
 
 let solve (timer: Timer) (Day4.GetInput input) validator =
     timer.Lap "Reading input"
+
     input
     |> Array.map (fun s ->
         let b =

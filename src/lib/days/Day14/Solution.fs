@@ -22,11 +22,13 @@ type Mask =
 
         let ones =
             Convert.ToInt64(str.Replace("X", "0"), 2)
-            
+
         let floating =
             Convert.ToInt64(str.Replace("1", "0").Replace("X", "1"), 2)
-            
-        { zeroes = zeroes; ones = ones; floating = floating }
+
+        { zeroes = zeroes
+          ones = ones
+          floating = floating }
 
 type Mem =
     { location: Int64
@@ -49,11 +51,12 @@ let getAllAddresses floating address =
             let newAddresses =
                 addresses
                 |> List.collect (fun a -> [ a; a ^^^ index ])
+
             inner newAddresses (index <<< 1) (floated &&& ~~~index)
         else
             inner addresses (index <<< 1) floated
 
-    inner [address] 1L floating
+    inner [ address ] 1L floating
 
 let (|MaskPattern|_|) =
     (|StringPattern|_|) "mask = "
@@ -93,39 +96,41 @@ let SolutionA (timer: Timer) (GetInput input) =
                 |> Map.change m.location (fun _ -> Some value)
 
             { acc with memory = newMap })
-           { mask = { zeroes = 0L; ones = 0L; floating = 0L }
+           { mask =
+                 { zeroes = 0L
+                   ones = 0L
+                   floating = 0L }
              memory = Map.empty }
     |!> timer.Lap "Folding"
     |> (fun x -> x.memory)
     |> Map.fold (fun acc _ elt -> acc + elt) 0L
     |!> timer.Lap "Folding again"
     |> string
-    
+
 [<Solution("14B")>]
 let SolutionB (timer: Timer) (GetInput input) =
     timer.Lap "Parsing"
-    
+
     input
     |> Array.fold (fun acc elt ->
         match elt with
         | Mask m -> { acc with mask = m }
         | Mem m ->
             let value = m.value
-            
+
             let addresses =
                 (m.location ||| acc.mask.ones)
                 |> getAllAddresses acc.mask.floating
 
             let newMap =
                 addresses
-                |> Seq.fold (fun map elt ->
-                    Map.change elt (fun _ ->
-                        Some value)
-                        map)
-                    acc.memory
+                |> Seq.fold (fun map elt -> Map.change elt (fun _ -> Some value) map) acc.memory
 
             { acc with memory = newMap })
-           { mask = { zeroes = 0L; ones = 0L; floating = 0L }
+           { mask =
+                 { zeroes = 0L
+                   ones = 0L
+                   floating = 0L }
              memory = Map.empty }
     |!> timer.Lap "Folding"
     |> (fun x -> x.memory)

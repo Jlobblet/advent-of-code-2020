@@ -13,6 +13,7 @@ let (|GetInput|) location =
 [<Solution("6A")>]
 let SolutionA (timer: Timer) (GetInput input) =
     timer.Lap "Reading input"
+
     input
     |> Array.map
         ((fun s -> s.Replace("\n", "").ToCharArray())
@@ -25,6 +26,7 @@ let SolutionA (timer: Timer) (GetInput input) =
 [<Solution("6B")>]
 let SolutionB (timer: Timer) (GetInput input) =
     timer.Lap "Reading input"
+
     input
     |> Array.map
         ((fun s ->

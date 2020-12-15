@@ -25,6 +25,7 @@ let (|GetInput|) input =
 
 let Solve (timer: Timer) (GetInput input) (Right right) (Down down) =
     timer.Lap "Parsing"
+
     input
     // Filter rows to keep track of vertical movement
     |> Seq.filteri (fun (i, _) -> i % down = 0)

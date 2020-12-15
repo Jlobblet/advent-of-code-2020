@@ -14,6 +14,7 @@ let invoke parameters (methodInfo: MethodInfo) = methodInfo.Invoke(null, paramet
 
 let consoleConcat strings =
     let width = Console.BufferWidth / 3
+
     let maxLen =
         strings
         |> Seq.map String.length
@@ -22,15 +23,20 @@ let consoleConcat strings =
         |> (+) 1
 
     let stringsPerLine = width / maxLen
-    let lines = (Seq.length strings) / stringsPerLine + 1
+
+    let lines =
+        (Seq.length strings) / stringsPerLine + 1
 
     let padLeft len (s: string) = s.PadLeft len
     let trim (s: string) = s.Trim()
-    
+
     strings
     |> Seq.toArray
     |> Array.splitInto lines
-    |> Array.map (Array.map (padLeft maxLen) >> String.concat " " >> trim)
+    |> Array.map
+        (Array.map (padLeft maxLen)
+         >> String.concat " "
+         >> trim)
     |> String.concat "\n"
 
 [<EntryPoint>]
@@ -64,7 +70,7 @@ let main _ =
         let fp = getFilepath () :> obj
 
         let t = Timer()
-        let result = solution |> invoke [| t; fp; |]
+        let result = solution |> invoke [| t; fp |]
         t.Lap "\U0001d4d5\U0001d4f2\U0001d4f7"
         t.Stop()
         printfn "%s" (t.Tabulate())

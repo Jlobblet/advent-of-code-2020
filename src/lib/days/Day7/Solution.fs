@@ -25,7 +25,8 @@ let (|Bag|_|) =
     .>>. (|SepBy|_|) ((|StringPattern|_|) ", ") (|Contents|_|)
     <!> fst
 
-let parseLine = function
+let parseLine =
+    function
     | Bag (name, contents) -> Some(name, Array.ofList contents)
     | _ -> None
 
@@ -59,7 +60,8 @@ let SolutionA (timer: Timer) (GetInput timer input) =
 [<Solution("7AS")>]
 let SolutionA2 (timer: Timer) (GetInput timer input) =
     let rec inner visited toVisit =
-        if Set.isEmpty toVisit then Set.count visited
+        if Set.isEmpty toVisit then
+            Set.count visited
         else
             let newBags =
                 input
@@ -75,14 +77,14 @@ let SolutionA2 (timer: Timer) (GetInput timer input) =
                 |> Set.ofArray
 
             let newVisited = Set.union visited toVisit
-                
+
             inner newVisited (Set.difference newBags newVisited)
 
     // Subtract 1 to account for the shiny gold bag not being able to contain itself
     inner Set.empty (Set.singleton "shiny gold") - 1
     |!> timer.Lap "Finding bags that contain shiny a gold bag"
     |> string
-                  
+
 
 [<Solution("7B")>]
 let SolutionB (timer: Timer) (GetInput timer input) =

@@ -37,7 +37,8 @@ let (<|>) (|P1|_|) (|P2|_|) x =
     | _ -> None
 
 let (|ExactlyNTimes|_|) N pred (input: string) =
-    match (Seq.length input >= N && input |> Seq.take N |> Seq.forall pred) with
+    match (Seq.length input >= N
+           && input |> Seq.take N |> Seq.forall pred) with
     | true -> Some(input.Substring(0, N), input.Substring(N))
     | false -> None
 
@@ -71,6 +72,13 @@ let (|IntPattern|_|) (input: string) =
     | Digits (digits, rest) -> Some(int digits, rest.TrimStart())
     | _ -> None
 
+let (|Int64Pattern|_|) (input: string) =
+    match input with
+    | MinusSign (Digits (digits, rest)) -> Some(-Convert.ToInt64(digits), rest.TrimStart())
+    | PlusSign (Digits (digits, rest))
+    | Digits (digits, rest) -> Some(Convert.ToInt64(digits), rest.TrimStart())
+    | _ -> None
+
 let (|IntRangePattern|_|) min max input =
     match input with
     | IntPattern (i, r) when i <= max && i >= min -> Some(i, r)
@@ -91,6 +99,7 @@ let (|Word|_|) (input: string) =
     | nonempty -> Some(input.Substring(0, Seq.length nonempty), input.Substring(Seq.length nonempty).TrimStart())
     | _ -> None
 
+// TODO make tail recursive
 let rec ZeroPlus P1 input =
     match P1 input with
     | None -> ([], input)

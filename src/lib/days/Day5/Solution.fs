@@ -41,6 +41,7 @@ let (|GetInput|) input = File.ReadAllLines(input)
 [<Solution("5A")>]
 let SolutionA (timer: Timer) (GetInput input) =
     timer.Lap "Reading input"
+
     input
     |> Array.choose (run' pSeatId >> resultToOption)
     |!> timer.Lap "Parsing"
@@ -50,6 +51,7 @@ let SolutionA (timer: Timer) (GetInput input) =
 [<Solution("5B")>]
 let SolutionB (timer: Timer) (GetInput input) =
     timer.Lap "Reading input"
+
     input
     |> Array.choose (run' pSeatId >> resultToOption)
     |!> timer.Lap "Parsing"
