@@ -52,7 +52,7 @@ let SolutionA (timer: Timer) (GetInput input) =
     timer.Lap "Constructing pattern"
         
     input.nearbyTickets
-    |> Array.map (fun str -> str.Split(',') |> Array.map int |> Array.filter pattern |> Array.sum)
+    |> Array.collect (fun str -> str.Split(',') |> Array.map int |> Array.filter pattern)
     |> Array.sum
     |> string
     |!> timer.Lap "Finding ticket scanning error rate"
