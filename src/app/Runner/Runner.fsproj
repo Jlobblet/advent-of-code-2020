@@ -53,6 +53,9 @@
         <Content Include="Input\15">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+        <Content Include="Input\16">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -61,6 +64,7 @@
       <ProjectReference Include="..\..\lib\days\Day13\Day13.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day14\Day14.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day15\Day15.fsproj" />
+      <ProjectReference Include="..\..\lib\days\Day16\Day16.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day1\Day1.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day2\Day2.fsproj" />
       <ProjectReference Include="..\..\lib\days\Day3\Day3.fsproj" />
